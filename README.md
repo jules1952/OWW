@@ -2,7 +2,7 @@
 
 Repozytorium przygotowuje porównanie trzech implementacji heurystyki Vertex Substitution dla ważonego problemu p-median: sekwencyjnej na CPU, wielowątkowej z OpenMP oraz hybrydowej CPU+GPU z CUDA. C++17 obsługuje obliczenia mierzone, a Python generowanie instancji, uruchamianie eksperymentów i analizę wyników.
 
-Repozytorium zawiera generator danych. Parser, implementacja algorytmu i skrypty pomiarowe będą dodawane w kolejnych iteracjach.
+Repozytorium zawiera generator danych i wspólny parser C++17 budowany przez CMake. Implementacja algorytmu i skrypty pomiarowe będą dodawane w kolejnych iteracjach.
 
 ## Generowanie pierwszych danych
 
@@ -14,6 +14,18 @@ py data/gen.py --n 1000 --m 100 --p 5 10 20 --distribution clustered --seed 1 --
 ```
 
 Każde uruchomienie zapisuje instancję, po 10 rozwiązań startowych dla każdego p oraz manifest parametrów i sum kontrolnych. Wybierz nowy katalog `--out`, jeśli wskazany już istnieje. Generator nie wymaga dodatkowych bibliotek. Szczegóły i format wejścia opisano w [instrukcji generatora](data/README.md).
+
+## Budowanie i sprawdzanie parsera
+
+Uruchom polecenia z głównego katalogu projektu. W Windows użyj **x64 Native Tools Command Prompt for Visual Studio** z CMake i Ninja w `PATH`. Testy tworzą własne dane w katalogu kompilacji.
+
+```text
+cmake -S . -B build/parser -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build/parser
+ctest --test-dir build/parser --output-on-failure
+```
+
+Wspólny moduł `pmedian_common` udostępnia `read_instance` i `read_start` przez [input.hpp](src/common/input.hpp). Parser sprawdza układ wierszy i wartości, a przy błędzie zgłasza wyjątek z nazwą pliku i numerem wiersza, jeśli udało się rozpocząć odczyt.
 
 ## Zacznij tutaj
 
@@ -38,7 +50,7 @@ Każde uruchomienie zapisuje instancję, po 10 rozwiązań startowych dla każde
 ├── src/seq/              # implementacja sekwencyjna
 ├── src/omp/              # implementacja OpenMP
 ├── src/cuda/             # implementacja CUDA sterowana przez CPU
-└── tests/                # testy i kontrole zgodności
+└── tests/                # testy parsera i przyszłe kontrole zgodności
 ```
 
 ## Agenci i skills

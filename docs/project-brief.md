@@ -50,4 +50,4 @@ Proponowany tekstowy format wejściowy ułatwia inspekcję na początku projektu
 
 ## Zakres tego szkieletu
 
-Dokumenty źródłowe zawierają także terminy zajęć i oddań. Są one wymaganiami kursu, a nie automatycznie terminami zapisanymi w konfiguracji repozytorium. Repozytorium ma generator danych i instrukcję jego uruchomienia w README. Parser, implementacja algorytmu, skrypty benchmarkowe i wyniki pozostają do przygotowania.
+Dokumenty źródłowe zawierają także terminy zajęć i oddań. Są one wymaganiami kursu, a nie automatycznie terminami zapisanymi w konfiguracji repozytorium. Repozytorium ma generator danych, wspólny parser C++17 i polecenia budowania w README. Implementacja algorytmu, skrypty benchmarkowe i wyniki pozostają do przygotowania.
