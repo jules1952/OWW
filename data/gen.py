@@ -17,8 +17,7 @@ import sys
 
 def rng_for(seed, stream):
     """Tworzy osobny generator losowy dla seeda i nazwy strumienia."""
-    # SHA-256 zamienia seed i nazwę (np. "weights") na stabilną liczbę.
-    # Wbudowany hash() może zmieniać wynik między uruchomieniami Pythona.
+    # SHA-256 daje to samo ziarno strumienia w kolejnych uruchomieniach Pythona.
     digest = hashlib.sha256(f"pmedian-v1:{seed}:{stream}".encode()).digest()
     return random.Random(int.from_bytes(digest, "big"))
 
@@ -33,23 +32,19 @@ def generate(n, m, size, distribution, weights, clusters, sigma, background, see
     if distribution == "clustered":
         centers = [(positions.uniform(0, size), positions.uniform(0, size))
                    for _ in range(clusters)]
-        # populations określa względną szansę wyboru każdego osiedla,
-        # a spreads jego odchylenie standardowe (rozproszenie) w metrach.
-        # Nie są to ustalone liczby mieszkańców przypisanych do osiedli.
+        # Większa wartość populations zwiększa szansę wyboru osiedla.
+        # spreads podaje odchylenie standardowe położenia w metrach.
         populations = [positions.uniform(0.5, 2) for _ in centers]
         spreads = [sigma * positions.uniform(0.5, 1.5) for _ in centers]
 
     demand = []
     for _ in range(n):
-        # W rozkładzie skupionym część punktów trafia do równomiernego tła.
-        # background jest prawdopodobieństwem, a nie dokładnym odsetkiem.
+        # Każdy punkt może niezależnie trafić do równomiernego tła.
         if distribution == "uniform" or positions.random() < background:
             x, y = positions.uniform(0, size), positions.uniform(0, size)
         else:
-            # Wybieramy osiedle; większa wartość populations daje większą szansę.
             k = positions.choices(range(clusters), weights=populations, k=1)[0]
-            # Losujemy wokół środka rozkładem normalnym. Współrzędną spoza
-            # kwadratu losujemy ponownie zamiast przesuwać ją na samą krawędź.
+            # Ponowne losowanie wartości spoza kwadratu zapobiega skupiskom przy krawędziach.
             cx, cy = centers[k]
             x = positions.gauss(cx, spreads[k])
             while not 0 <= x <= size:
@@ -57,13 +52,11 @@ def generate(n, m, size, distribution, weights, clusters, sigma, background, see
             y = positions.gauss(cy, spreads[k])
             while not 0 <= y <= size:
                 y = positions.gauss(cy, spreads[k])
-        # Waga reprezentuje liczbę mieszkańców. Rozkład lognormalny daje
-        # dodatnie wartości; zaokrąglenie i max(1, ...) zapewniają całkowite w >= 1.
-        # Parametry 3 i 0.75 opisują logarytm zmiennej, nie średnią wagi.
+        # Waga reprezentuje liczbę mieszkańców, dlatego jest całkowita i wynosi co najmniej 1.
         w = 1 if weights == "unit" else max(1, round(weights_rng.lognormvariate(3, 0.75)))
         demand.append((x, y, w))
 
-    # Kandydaci są osobnym zbiorem miejsc, a nie podzbiorem mieszkańców.
+    # Tych samych kandydatów można użyć przy różnych rozkładach popytu.
     candidates = [(candidates_rng.uniform(0, size), candidates_rng.uniform(0, size))
                   for _ in range(m)]
     return demand, candidates, centers
@@ -71,8 +64,7 @@ def generate(n, m, size, distribution, weights, clusters, sigma, background, see
 
 def start_set(m, p, seed):
     """Losuje p różnych indeksów stacji spośród m kandydatów."""
-    # sample losuje bez powtórzeń; sortowanie daje jednoznaczną kolejność zapisu.
-    # Start nie zależy od n, wag, rozkładu ani seeda instancji.
+    # Losujemy bez zwracania, a indeksy sortujemy zgodnie z formatem wejścia.
     return sorted(rng_for(seed, f"start:{m}:{p}").sample(range(m), p))
 
 
@@ -91,9 +83,7 @@ def write_dataset(args):
     args.out.mkdir(parents=True, exist_ok=False)
     instance = args.out / "instance.txt"
     with instance.open("w", encoding="utf-8", newline="\n") as stream:
-        # Najpierw rozmiary, potem n punktów z wagami i m kandydatów bez wag.
-        # .17g zachowuje 17 cyfr znaczących, wystarczających do ponownego
-        # odczytu współrzędnych w typowej reprezentacji double.
+        # 17 cyfr znaczących pozwala odczytać te same współrzędne w double.
         stream.write(f"{args.n} {args.m}\n")
         for x, y, w in demand:
             stream.write(f"{x:.17g} {y:.17g} {w}\n")
@@ -101,8 +91,6 @@ def write_dataset(args):
             stream.write(f"{x:.17g} {y:.17g}\n")
 
     starts = []
-    # Dla każdej wartości p tworzymy osobny start dla każdego seeda.
-    # Na przykład 3 wartości p i 10 seedów oznaczają 30 plików startowych.
     for p in sorted(args.p):
         for seed in args.start_seeds:
             path = args.out / f"start_p{p}_s{seed}.txt"
@@ -110,8 +98,7 @@ def write_dataset(args):
             path.write_text(f"{p}\n" + " ".join(map(str, selected)) + "\n", encoding="utf-8")
             starts.append({"p": p, "seed": seed, "file": path.name, "sha256": sha256(path)})
 
-    # Manifest to opis danych, nie wynik solvera. Pomijamy ścieżkę wyjściową,
-    # żeby odtworzenie danych w innym katalogu miało taką samą konfigurację.
+    # Odtworzenie danych w innym katalogu ma dać tę samą konfigurację w manifeście.
     config = {key: value for key, value in vars(args).items() if key != "out"}
     manifest = {
         "schema_version": 1,
@@ -134,8 +121,6 @@ def write_dataset(args):
 
 def parse_args(argv=None):
     """Odczytuje opcje terminala i odrzuca parametry, z których nie powstaną poprawne dane."""
-    # argv=None oznacza argumenty podane w terminalu; listę można przekazać
-    # bezpośrednio przy wywołaniu funkcji, np. podczas sprawdzania generatora.
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--n", type=int, default=1000, help="Number of demand points")
     parser.add_argument("--m", type=int, default=100, help="Number of candidate stations")
@@ -150,8 +135,6 @@ def parse_args(argv=None):
     parser.add_argument("--start-seeds", type=int, nargs="+", default=list(range(1, 11)))
     parser.add_argument("--out", type=Path, required=True, help="New output directory (must not exist)")
     args = parser.parse_args(argv)
-    # argparse wcześniej sprawdza typy, dozwolone nazwy i obecność --out.
-    # Poniżej sprawdzamy zależności oraz zakresy wartości.
     if args.n < 1 or args.m < 1:
         parser.error("n and m must be positive")
     if any(p < 1 or p > args.m for p in args.p):
@@ -181,8 +164,7 @@ def main(argv=None):
     try:
         manifest = write_dataset(args)
     except OSError as error:
-        # Np. brak uprawnień, miejsca na dysku lub konflikt nazwy katalogu.
-        # Kod 1 informuje terminal o niepowodzeniu; częściowe pliki mogą pozostać.
+        # Po błędzie zapisu część plików może już istnieć.
         print(f"Cannot write dataset: {error}", file=sys.stderr)
         return 1
     print(f"Created {args.out / 'instance.txt'} and {len(manifest['starts'])} start sets.")
@@ -191,6 +173,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    # Uruchamiamy main tylko jako skrypt; import nie generuje żadnych danych.
-    # Sukces daje kod 0, błąd zapisu 1, a błędne argumenty argparse kod 2.
     sys.exit(main())

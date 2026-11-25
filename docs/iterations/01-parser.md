@@ -1,21 +1,9 @@
-# Wspólny parser formatu v1
+# Parser formatu v1
 
-## Identyfikacja
+Instancję i zestaw początkowy wczytuje biblioteka `pmedian_common`. Kolejność kandydatów w pliku jest podstawą ich numeracji od zera. Parser sprawdza każdy wiersz osobno, dzięki czemu pole przeniesione do następnego wiersza daje błąd w miejscu, w którym go brakuje. Start musi mieć dokładnie `p` ściśle rosnących indeksów z zakresu od 0 do `m - 1`. [Dokładny format plików](../../data/README.md)
 
-- Etap przygotowania do S0, 24 listopada 2026.
-- Walidacja na lokalnym Windows x64 z MSVC 19.52.37029, C++17, CMake i Ninja, konfiguracja Release.
-- Instancje `uniform_demo` i `clustered_demo`, każda z `n=1000`, `m=100` i 10 startami dla każdego `p` ze zbioru {5, 10, 20}.
+## Walidacja
 
-## Zmiana
+Testy przeprowadzono 24 listopada 2026 r. w Windows, w konfiguracji Release x64 z MSVC 19.52.37029, CMake i Ninja. CTest potwierdził poprawny odczyt wartości i kolejności kandydatów, obsługę zakończeń wierszy LF i CRLF oraz przypadki `p = 1` i `p = m`. Testy sprawdziły też komunikaty dla brakujących, nadmiarowych i niepoprawnych danych.
 
-Biblioteka `pmedian_common` wczytuje osobno instancję i start. Przechowuje współrzędne i wagi w `double`, a kolejność kandydatów z pliku zachowuje jako podstawę indeksowania od zera. Odczyt wierszami pozwala wskazać miejsce błędu i wykryć pola przeniesione do innego wiersza. Start przechodzi walidację, jeśli ma dokładnie `p` ściśle rosnących indeksów z zakresu `[0, m)`.
-
-## Pomiar i poprawność
-
-- Czasy, liczniki profilu, koszt względem S0 i `final_set_hash` są niezmierzone. Etap obejmuje odczyt danych.
-- CTest potwierdził odczyt wartości i kolejności kandydatów, obsługę LF i CRLF, przypadki `p=1` i `p=m` oraz diagnostykę brakujących, nadmiarowych i niepoprawnych danych.
-- Dodatkowe uruchomienie wczytało obie instancje demonstracyjne i wszystkie 60 wygenerowanych startów.
-
-## Decyzja
-
-Przyjęto parser jako wspólne wejście do S0 i kolejnych wariantów.
+Dodatkowa kontrola wczytała obie instancje demonstracyjne (`n = 1000`, `m = 100`) i wszystkie 60 zestawów początkowych. Po tych testach parser stał się wspólnym wejściem dla solverów.

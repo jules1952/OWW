@@ -44,7 +44,7 @@ def git(*args):
 
 
 def executable_record(executable):
-    # Metadane odczytujemy z pliku wykonywalnego użytego w serii.
+    # O ustawienia kompilacji pytamy program, który faktycznie trafi do pomiaru.
     executable = executable.resolve(strict=True)
     output = subprocess.check_output([str(executable), "--build-info"], text=True)
     info = dict(line.split("=", 1) for line in output.splitlines())
@@ -56,7 +56,7 @@ def executable_record(executable):
 
 
 def checkout_record(extra_sources=()):
-    # Stan źródeł opisuje katalog w chwili pomiaru. Hash binarium identyfikuje użyty program.
+    # Zapisujemy stan katalogu i sumy plików, bo pomiar mógł użyć lokalnych zmian.
     return {
         "commit": git("rev-parse", "HEAD"),
         "dirty": bool(git("status", "--porcelain")),

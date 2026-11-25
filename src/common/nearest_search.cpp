@@ -40,6 +40,7 @@ void NearestSearch::refresh_nearest() {
     const auto& stations = result_.stations;
     const double infinity = std::numeric_limits<double>::infinity();
     for (std::size_t i = 0; i < nearest_.size(); ++i) {
+        // Przy jednej stacji druga odległość pozostaje nieskończona.
         Nearest item{stations.front(), infinity, infinity};
         for (auto station : stations) {
             const double d = distance(instance_.demand[i].position, instance_.candidates[station]);
@@ -48,7 +49,7 @@ void NearestSearch::refresh_nearest() {
                 item.first = d;
                 item.station = station;
             } else if (d < item.second) {
-                // Inna stacja w tej samej odległości może być drugą najbliższą.
+                // Dwie różne stacje mogą być tak samo blisko punktu.
                 item.second = d;
             }
         }
@@ -69,7 +70,8 @@ SwapMove NearestSearch::evaluate(std::size_t position, std::size_t in,
     for (std::size_t i = 0; i < nearest_.size(); ++i) {
         const auto& item = nearest_[i];
         const double remaining = item.station == out ? item.second : item.first;
-        // Każdą zamianę sumujemy w kolejności punktów używanej w S0.
+        // Sumujemy punkty w tej samej kolejności co S0, aby ograniczyć
+        // różnice zaokrągleń, które mogłyby zmienić wybór ruchu.
         cost += instance_.demand[i].weight * std::min(remaining, distances[i]);
     }
     if (!std::isfinite(cost))

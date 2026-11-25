@@ -101,7 +101,7 @@ def main():
                     correctness.append(row)
 
         for rep in range(reps + 1):
-            # Rotacja ogranicza wpływ pozycji uruchomienia na dany wariant.
+            # Zmieniamy kolejność, żeby ten sam wariant nie startował zawsze jako pierwszy.
             offset = rep % len(variants)
             for stage, count in variants[offset:] + variants[:offset]:
                 row, outcome = run(stage, count, scaling, scaling_start, rep)

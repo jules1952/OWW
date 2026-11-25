@@ -1,10 +1,10 @@
-# P1 z OpenMP
+# Równoległa ocena zamian w P1
 
 ## Hipoteza i implementacja
 
-Profil S1 dla instancji `n=1000, m=100, p=10` pokazał, że ocena zamian i obliczanie odległości do kandydatów zajęły łącznie 8,24 ms, a odświeżenie najbliższych stacji 0,86 ms. Przy większej instancji rozdzielenie kandydatów do dodania między wątki powinno skrócić dominującą część pracy. [Profil S1](../../results/raw/seq-s0-s1-end-to-end/phases.csv).
+W profilu S1 dla instancji `n = 1000`, `m = 100`, `p = 10` ocena zamian i liczenie odległości do kandydatów zajęły razem 8,24 ms. Odświeżenie najbliższych stacji zajęło 0,86 ms. Dlatego w P1 rozdzielamy między wątki ocenę kandydatów, a aktualizację zestawu wykonujemy po zakończeniu przeglądu. [Profil S1](../../results/raw/seq-s0-s1-end-to-end/phases.csv)
 
-S1 i P1 korzystają ze wspólnego stanu wyszukiwania, funkcji oceny zamiany i kryterium stopu. P1 przydziela kandydatów `in` statycznie. Wątek oblicza odległości do danego kandydata raz i wykorzystuje je dla wszystkich `out`. Każdy koszt nadal jest sumowany sekwencyjnie w `double`, w kolejności punktów z pliku. Po zakończeniu oceny wątek sterujący wybiera ruch za pomocą tego samego komparatora `(delta, out, in)`, którego używają S0 i S1. Po zaakceptowanej zamianie odświeża dane o najbliższych stacjach.
+OpenMP przydziela kandydatów `in` statycznie. Wątek liczy odległości do każdego przydzielonego kandydata raz i używa ich dla wszystkich `out`. Punkty w pojedynczym koszcie sumujemy w `double` i w kolejności z pliku, tak samo jak w S0 i S1. Po zakończeniu oceny wątek sterujący porównuje najlepsze ruchy z każdego wątku według `(delta, out, in)`. Jeśli ruch obniża koszt o więcej niż ustalony próg, aktualizuje stacje i odświeża odległości. [Wspólne reguły](../architecture.md)
 
 ## Walidacja E1
 
@@ -14,9 +14,9 @@ Sprawdzono 20 startów, po 10 dla instancji skupionej z wagami lognormalnymi i r
 
 Pomiar wykonano na Windows 10 (19045), Intel Core i5-12600KF z 16 wątkami logicznymi i 32 GiB RAM, w kompilacji Release x64 MSVC 19.52.37029.0 (`/O2 /Ob2 /DNDEBUG`), z OpenMP 2.0 i `OMP_DYNAMIC=FALSE`. Manifest odnotowuje bazowy commit `a3a50b2`, stan katalogu roboczego i sumy kontrolne.
 
-Oba warianty uruchomiono na tej samej instancji równomiernej z wagami lognormalnymi i seedem 3 (`n=3000, m=180, p=15)), ze startem `start_p15_s1.txt`. Po jednej rozgrzewce wykonano po pięć pomiarów na konfigurację. Czasy to mediany, a liczby w nawiasach to IQR. Przyspieszenie liczono względem S1, osobno dla wyszukiwania i czasu pełnego procesu. [Surowe pomiary](../../results/raw/p1-e1-e3/scaling.csv) · [Manifest](../../results/raw/p1-e1-e3/manifest.json).
+S1 i P1 dostały tę samą instancję równomierną z wagami lognormalnymi i ziarnem 3 (`n = 3000`, `m = 180`, `p = 15`) oraz start `start_p15_s1.txt`. Po jednej rozgrzewce wykonano pięć pomiarów dla każdej konfiguracji. Tabela podaje mediany i rozstęp międzykwartylowy (IQR) w nawiasie. Przyspieszenie liczymy względem S1 dla tego samego zakresu czasu. [Surowe pomiary](../../results/raw/p1-e1-e3/scaling.csv) · [Manifest](../../results/raw/p1-e1-e3/manifest.json)
 
-| Wariant | Wątki | Wyszukiwanie [ms] | End-to-end [ms] | Speedup wyszukiwania | Speedup end-to-end | Efektywność wyszukiwania | Karp–Flatt |
+| Wariant | Wątki | Wyszukiwanie [ms] | Całe uruchomienie [ms] | Przyspieszenie wyszukiwania | Przyspieszenie całego procesu | Efektywność wyszukiwania | Karp–Flatt |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | S1 | 1 | 108,952 (2,787) | 119,768 (2,267) | 1,00× | 1,00× | 100,0% | — |
 | P1 | 1 | 118,366 (9,068) | 130,272 (6,981) | 0,92× | 0,92× | 92,0% | — |
@@ -25,7 +25,7 @@ Oba warianty uruchomiono na tej samej instancji równomiernej z wagami lognormal
 | P1 | 8 | 33,998 (1,735) | 45,175 (1,637) | 3,20× | 2,65× | 40,1% | 0,214 |
 | P1 | 16 | 30,862 (1,286) | 43,101 (2,377) | 3,53× | 2,78× | 22,1% | 0,235 |
 
-Wszystkie przebiegi pomiarowe zgodziły się z S0. Koszt wyniósł `77219654.755592793`, hash `5d92de54509c088e`, a liczba zamian 15. P1 przyjęto jako wariant OpenMP. Na tej instancji największy spadek czasu nastąpił przy przejściu z jednego do czterech wątków. Czas przy jednym wątku obejmuje też obsługę regionów OpenMP. Udział poszczególnych narzutów P1 i szczytowe zużycie pamięci pozostają niezmierzone.
+Wyniki wszystkich przebiegów pokryły się z S0. Koszt wyniósł `77219654.755592793`, suma kontrolna zestawu `5d92de54509c088e`, a liczba zamian 15. P1 zostaje wariantem OpenMP. Dla tej instancji podwojenie liczby wątków z 8 do 16 skróciło medianę wyszukiwania z 34,0 do 30,9 ms. Zysk jest mniejszy niż przy przejściu z 2 do 4 wątków. Udział poszczególnych narzutów P1 i szczytowe użycie pamięci pozostają niezmierzone.
 
 ## Odtworzenie
 

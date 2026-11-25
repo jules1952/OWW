@@ -55,7 +55,7 @@ S0Result solve_s0(const Instance& instance, StationSet stations) {
         auto trial = stations;
         SwapMove best;
 
-        // Wszystkie ruchy oceniamy względem jednego bieżącego rozwiązania.
+        // Próby zmieniają jedynie kopię zestawu. Każda delta odnosi się do tego samego kosztu.
         for (std::size_t position = 0; position < stations.size(); ++position) {
             const auto out = stations[position];
             for (std::size_t in = 0; in < selected.size(); ++in) {
@@ -75,7 +75,7 @@ S0Result solve_s0(const Instance& instance, StationSet stations) {
 
         if (!improves(best, result.cost)) break;
 
-        // Zatwierdzamy tylko jedną, najlepszą zamianę z całego przeglądu.
+        // Dopiero po całym przeglądzie zmieniamy bieżący zestaw.
         selected[best.out] = false;
         selected[best.in] = true;
         stations[best.position] = best.in;

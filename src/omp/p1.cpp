@@ -27,14 +27,14 @@ SolverResult solve_p1(const Instance& instance, StationSet stations, int threads
     const int worker_limit = static_cast<int>(std::min(remaining, static_cast<std::size_t>(threads)));
     std::vector<Worker> workers(static_cast<std::size_t>(worker_limit));
     for (auto& worker : workers) worker.distances.resize(instance.demand.size());
-    // Typ ze znakiem zapewnia zgodność z pętlą OpenMP w MSVC.
+    // Indeks ze znakiem zachowuje zgodność z OpenMP 2.0 w MSVC.
     const auto candidate_count = static_cast<std::ptrdiff_t>(instance.candidates.size());
     int actual_threads = 1;
     int peak_threads = 1;
 
     while (true) {
-        // Wątek dostaje kandydata in razem ze wszystkimi jego zamianami, aby użyć
-        // tych samych odległości dla każdego out. Obliczenia pojedynczej delty są sekwencyjne.
+        // Wątek obsługuje wszystkie zamiany z danym in. Wystarczy raz policzyć
+        // odległości do tego kandydata i użyć ich dla każdego out.
         #pragma omp parallel num_threads(worker_limit) default(none) shared(search, workers, actual_threads, candidate_count)
         {
             auto& worker = workers[static_cast<std::size_t>(omp_get_thread_num())];
@@ -53,7 +53,7 @@ SolverResult solve_p1(const Instance& instance, StationSet stations, int threads
                     for (std::size_t position = 0; position < search.station_count(); ++position)
                         keep_best(best, search.evaluate(position, in, worker.distances));
                 } catch (...) {
-                    // Wyjątek zgłaszamy dopiero po powrocie do wątku sterującego.
+                    // Zapamiętujemy wyjątek, żeby zgłosić go poza regionem OpenMP.
                     error = std::current_exception();
                 }
             }
@@ -61,6 +61,7 @@ SolverResult solve_p1(const Instance& instance, StationSet stations, int threads
             worker.error = error;
         }
 
+        // Region zakończył się, więc wyniki wszystkich wątków są gotowe do porównania.
         peak_threads = std::max(peak_threads, actual_threads);
         SwapMove best;
         for (int i = 0; i < actual_threads; ++i) {

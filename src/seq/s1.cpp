@@ -26,6 +26,7 @@ S1Result solve_s1(const Instance& instance, StationSet stations) {
         SwapMove best;
         for (std::size_t in = 0; in < instance.candidates.size(); ++in) {
             if (search.is_selected(in)) continue;
+            // Odległości do in przydadzą się przy każdym możliwym out.
             {
 #ifdef PMEDIAN_PROFILE_SEQ
                 PhaseTimer timer(distance_profile);

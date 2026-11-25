@@ -1,6 +1,6 @@
 # Plan badań wydajnościowych
 
-Badania opisane w materiałach źródłowych obejmują następujące pytania. Każdy eksperyment powinien mieć własną konfigurację w `bench/configs/`, surowe wyniki w `results/raw/` oraz analizę opartą na tych plikach.
+Seria P1 obejmuje sprawdzenie poprawności na 20 startach i pomiar skalowania na jednej instancji. Tabela pokazuje pełny plan badań. Ustawienia zapisujemy w `bench/configs/`, a surowe wyniki w `results/raw/`. [Dotychczasowe wyniki E1 i E3](iterations/03-p1-openmp.md)
 
 | ID | Pytanie | Główne zmienne | Raport |
 |---|---|---|---|
@@ -14,12 +14,9 @@ Badania opisane w materiałach źródłowych obejmują następujące pytania. Ka
 
 ## Protokół pomiaru
 
-- Wykonaj przebieg rozgrzewkowy, a następnie co najmniej 5–10 powtórzeń. Raportuj liczbę powtórzeń, medianę i IQR lub odchylenie standardowe.
-- Używaj tych samych instancji, wag, seedów i startów dla wszystkich wariantów.
-- Mierz wyłącznie wersje C++ przy porównywaniu speedup. Sekwencyjny punkt odniesienia musi działać na tej samej maszynie.
-- Zapisz CPU, GPU, RAM, system, kompilator, wersję CUDA, flagi i ustawienia OpenMP.
-- Dla GPU pokaż czas całkowity z transferami oraz rozbicie `t_prep`, `t_h2d`, `t_search`, `t_d2h`.
-- Wykresy generuj ze źródłowych CSV. Podpisuj osie i jednostki.
+- Dla każdej konfiguracji wykonujemy rozgrzewkę oraz co najmniej pięć powtórzeń. Podajemy liczbę powtórzeń, medianę i rozstęp międzykwartylowy (IQR).
+- Wszystkie warianty C++ uruchamiamy na tej samej maszynie i z tymi samymi instancjami oraz zestawami początkowymi. Zapisujemy sprzęt, system, kompilator, flagi i ustawienia OpenMP. Dla CUDA zapisujemy też wersję narzędzi.
+- Przy porównaniu czasów dla GPU uwzględnimy pełne uruchomienie z transferami i osobno pokażemy `t_prep`, `t_h2d`, `t_search` oraz `t_d2h`.
 
 ## Zapis wyników
 

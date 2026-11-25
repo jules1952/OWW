@@ -26,8 +26,7 @@ def run_solver(executable, instance, start, path, repetition, *, solver_args=(),
     with path.open(newline="", encoding="utf-8") as result:
         row, = csv.DictReader(result)
 
-    # Zegar obejmuje proces C++, łącznie z jego zapisem plików. Uzupełnienie CSV
-    # przez Pythona odbywa się po pomiarze, tak samo jak odczyt wyników do walidacji.
+    # Mierzymy cały proces C++. Odczyt i sprawdzenie CSV odbywają się już po pomiarze.
     row["rep"] = "" if repetition == "profile" else str(repetition)
     row["t_total"] = format(total, ".17g")
     with path.with_suffix(".csv.stations.txt").open(encoding="utf-8") as result:
@@ -90,7 +89,8 @@ def main():
     timings = {stage: {metric: [] for metric in METRICS} for stage in release}
     reference = None
     phases = []
-    # Solver nadal zapisuje własne pliki. Benchmark po walidacji publikuje tylko tabele serii.
+    # Pliki pojedynczych przebiegów są potrzebne do sprawdzenia wyników.
+    # Po sprawdzeniu zostają zbiorcze tabele serii.
     with TemporaryDirectory(dir=args.out) as temporary:
         for repetition in [*range(REPETITIONS + 1), "profile"]:
             stages = ("s0", "s1")

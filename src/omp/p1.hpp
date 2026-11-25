@@ -4,7 +4,7 @@
 
 namespace pmedian {
 
-// threads ogranicza rozmiar zespołu. Wynik podaje największy faktyczny zespół.
+// threads to górny limit. Wynik podaje największą faktyczną liczbę wątków w iteracji.
 SolverResult solve_p1(const Instance& instance, StationSet stations, int threads);
 
 } // namespace pmedian

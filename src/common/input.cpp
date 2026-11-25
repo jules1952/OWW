@@ -100,7 +100,7 @@ Instance read_instance(const std::filesystem::path& path) {
         input.fail("oczekiwano dwóch dodatnich liczb całkowitych n i m");
     }
 
-    // Dodajemy rekordy w trakcie odczytu. Sam nagłówek może zawierać błędny rozmiar.
+    // Rozszerzamy wektor dopiero po odczycie rekordu. Rozmiar z nagłówka może być błędny.
     Instance instance;
     for (std::size_t i = 0; i < n; ++i) {
         auto row = input.row();
@@ -139,7 +139,7 @@ StationSet read_start(const std::filesystem::path& path, const Instance& instanc
         if (!read_index(row, index) || index >= m) {
             input.fail("oczekiwano p indeksów kandydatów z zakresu [0, m)");
         }
-        // Rosnąca kolejność jednocześnie zapewnia unikalność indeksów.
+        // Sprawdzenie kolejności wykrywa też powtórzone indeksy.
         if (!selected.empty() && index <= selected.back()) {
             input.fail("indeksy kandydatów muszą być różne i posortowane rosnąco");
         }

@@ -4,7 +4,8 @@
 
 namespace pmedian {
 
-// S1 i P1 dzielą stan iteracji i ocenę kosztu. Stan zmienia się między przeglądami zamian.
+// S1 i P1 oceniają zamiany na podstawie tego samego zestawu stacji i odległości.
+// Podczas oceny stan pozostaje stały, więc wątki P1 mogą odczytywać go równolegle.
 class NearestSearch {
 public:
     NearestSearch(const Instance& instance, StationSet stations);

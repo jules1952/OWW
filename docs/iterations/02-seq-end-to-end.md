@@ -1,10 +1,10 @@
-# Pomiar end-to-end i walidacja S0/S1
+# Czas obliczeń i całego uruchomienia S0 i S1
 
 Serię wykonano 25 listopada 2026 r. na Windows 10 (19045), na procesorze Intel Core i5-12600KF z 16 wątkami logicznymi i 32 GiB RAM. Kompilator MSVC 19.52.37029.0, Release x64, C++17, flagi optymalizacji `/O2 /Ob2 /DNDEBUG`. Oba solvery pracowały sekwencyjnie na CPU. Manifest odnotowuje bazowy commit `bdf0bdf`, lokalne zmiany oraz sumy SHA-256 kodu, plików wykonywalnych i wejścia. [Manifest serii](../../results/raw/seq-s0-s1-end-to-end/manifest.json).
 
 ## Zakres pomiaru
 
-W poprzedniej serii `t_total` powielał czas solvera. W tej serii `t_prep` mierzy odczyt instancji i startu, a `t_search` mierzy wywołanie solvera. Zewnętrzny zegar obejmuje uruchomienie procesu, odczyt danych, obliczenia, zapis plików i odbiór wyjścia na konsolę. Skrypt zapisuje ten czas w `t_total` po zakończeniu procesu. Przy uruchomieniu samego programu pole `t_total` jest puste.
+Przy krótkich obliczeniach odczyt i zapis plików mogą stanowić sporą część czasu. Program C++ mierzy osobno odczyt instancji i startu (`t_prep`) oraz wyszukiwanie (`t_search`). Skrypt w Pythonie mierzy czas od uruchomienia do zakończenia procesu i uzupełnia `t_total`. Obejmuje on także zapis plików i odbiór komunikatów programu. Przy bezpośrednim uruchomieniu solvera pole `t_total` jest puste.
 
 Dla każdego solvera wykonano jedną rozgrzewkę z `rep=0`, pięć pomiarów z `rep=1–5` i osobny przebieg z profilowaniem oraz pustym `rep`. W pomiarach zmieniano kolejność S0/S1 między kolejnymi powtórzeniami. Skrypt porównuje koszt z tolerancją względną `1e-6`, zestaw stacji, hash i liczbę iteracji. Manifest odczytuje kompilator, konfigurację i ustawienie profilowania bezpośrednio z użytych programów. [Tabela pomiarów](../../results/raw/seq-s0-s1-end-to-end/measurements.csv) · [Rozgrzewki](../../results/raw/seq-s0-s1-end-to-end/warmup.csv) · [Przebiegi profilowane](../../results/raw/seq-s0-s1-end-to-end/profile-runs.csv).
 
@@ -34,6 +34,6 @@ python data/gen.py --n 1000 --m 100 --p 10 --distribution uniform --seed 1 --out
 python bench/run_seq_profile.py build/seq-end-to-end-release build/seq-end-to-end-profile data/generated/seq_end_to_end/instance.txt data/generated/seq_end_to_end/start_p10_s1.txt results/raw/seq-s0-s1-end-to-end-repeat
 ```
 
-Manifest osobnej kompilacji można zapisać przez `python bench/configs/record_build.py --help`, które pokazuje argumenty dla czterech plików wykonywalnych i ścieżki wyjściowej.
+Polecenie `python bench/configs/record_build.py --help` pokazuje, jak zapisać sam manifest kompilacji na podstawie czterech plików wykonywalnych.
 
 W obu konfiguracjach przeszedł CTest, w tym osiem przypadków S0/S1 z oczekiwanym kosztem, zestawem stacji i liczbą iteracji. Sprawdzono również CSV, ustawienia profilowania w binariach oraz sumy wejścia i plików wykonywalnych. Nowy sposób pomiaru przyjęto na podstawie tych kontroli.

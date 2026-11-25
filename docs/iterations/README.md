@@ -1,11 +1,9 @@
-# Notatki z iteracji
+# Etapy pracy i wyniki
 
-[Dokumentacja wersji sekwencyjnej S0 i S1](S0-S1.md) obejmuje obie iteracje optymalizacji i wyniki profilowania.
-
-[Pomiar end-to-end i walidacja S0/S1](02-seq-end-to-end.md) opisuje zakres czasu, metadane i nową serię pomiarową.
-
-[OpenMP P1](03-p1-openmp.md) opisuje równoległą ocenę zamian, zgodność z S0 i pomiary skalowania.
-
-Zapisuj każdą zmianę algorytmiczną lub wydajnościową w osobnym pliku `NN-nazwa.md`, używając `../iteration-template.md`. Numeruj iteracje kolejno i podawaj commit/tag, wariant S0/S1/S2/P1/G1/G2/G3, profil, pomiary przed i po oraz decyzję.
-
-Nie zastępuj wcześniejszych notatek wynikami późniejszych wersji. Odrzucone optymalizacje i uzasadnienie zakończenia pracy również należą do historii projektu.
+| Etap | Co opisuje notatka |
+|---|---|
+| [Generator danych](00-generator.md) | Losowanie instancji, zestawy początkowe i testy powtarzalności. |
+| [Parser](01-parser.md) | Format wejścia, reguły walidacji i testy odczytu. |
+| [S0 i S1](S0-S1.md) | Pierwsze pomiary, wąskie gardło S0 i sposób zmniejszenia liczby obliczeń. |
+| [Pomiar całego uruchomienia](02-seq-end-to-end.md) | Osobne czasy odczytu, wyszukiwania i całego procesu dla S0 i S1. |
+| [OpenMP P1](03-p1-openmp.md) | Podział pracy między wątki, zgodność z S0 i wyniki skalowania. |

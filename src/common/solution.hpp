@@ -15,7 +15,7 @@ struct SolverResult {
     int threads = 1;
 };
 
-// Delta zero oznacza, że podczas przeglądu nie znaleziono poprawy.
+// Przegląd zaczyna się od delty 0. Zapamiętujemy tylko ruchy obniżające koszt.
 struct SwapMove {
     double delta = 0.0;
     double cost = 0.0;
@@ -24,7 +24,8 @@ struct SwapMove {
     std::size_t position = 0;
 };
 
-// Ten sam komparator służy do wyboru lokalnego i do scalenia wyników wątków.
+// Przy równej delcie porównujemy out, a potem in. Dzięki temu kolejność oceny
+// zamian w poszczególnych wątkach nie wpływa na wybór ruchu.
 inline void keep_best(SwapMove& best, const SwapMove& candidate) {
     if (candidate.delta < best.delta ||
         (candidate.delta == best.delta && candidate.delta < 0.0 &&
@@ -34,6 +35,7 @@ inline void keep_best(SwapMove& best, const SwapMove& candidate) {
 }
 
 inline bool improves(const SwapMove& move, double cost) {
+    // Próg bierze pod uwagę bieżący koszt i obowiązuje dopiero przy zatwierdzaniu.
     return move.delta < -epsilon * cost;
 }
 
