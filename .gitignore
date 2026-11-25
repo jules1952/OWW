@@ -20,8 +20,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Locally generated, reproducible input data
-data/generated/*
-!data/generated/.gitkeep
+data/generated/
 
 # Large profiler captures; keep summaries and small text reports
 *.nsys-rep

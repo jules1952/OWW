@@ -59,17 +59,14 @@ build/p1-release/pm_p1.exe data/generated/uniform_demo/instance.txt data/generat
 .
 ├── .agents/skills/       # workflow implementacji, dokumentacji i badań
 ├── .codex/agents/        # wyspecjalizowane role Codex
-├── analysis/             # wykresy i analiza surowych CSV
 ├── bench/configs/        # konfiguracje eksperymentów
 ├── data/                 # generator i instancje; duże dane generowane lokalnie
 ├── docs/                 # brief, architektura, metodologia i notatki
-├── profiles/             # raporty profilowania CPU i GPU
 ├── results/raw/          # surowe wyniki CSV
 ├── src/common/           # wspólny model danych i reguły algorytmu
 ├── src/seq/              # implementacja sekwencyjna
 ├── src/omp/              # implementacja OpenMP
-├── src/cuda/             # implementacja CUDA sterowana przez CPU
-└── tests/                # testy parsera i przyszłe kontrole zgodności
+└── tests/                # testy parsera i zgodności solverów
 ```
 
 ## Agenci i skills

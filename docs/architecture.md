@@ -16,10 +16,10 @@
 | `src/common/` | Typy instancji i rozwiązania, odczyt danych, funkcja celu, kryterium stopu, reguła remisów, hash zbioru, wynik i pomiar czasu |
 | `src/seq/` | Referencyjne S0 oraz kolejne optymalizacje sekwencyjne S1/S2 |
 | `src/omp/` | Wielowątkowa ocena zamian przez OpenMP, lokalne wyniki wątków i deterministyczne scalenie |
-| `src/cuda/` | CPU koordynuje algorytm; GPU oblicza i redukuje delty zamian |
+| `src/cuda/` (planowany) | CPU koordynuje algorytm, GPU oblicza i redukuje delty zamian |
 | `data/` | Generator, konfiguracje i format instancji/startów |
 | `bench/` | Siatka parametrów, uruchomienia, powtórzenia i zbieranie CSV |
-| `analysis/` | Tabele i wykresy generowane z surowych wyników |
+| `analysis/` (planowany) | Tabele i wykresy generowane z surowych wyników |
 | `docs/` | Kontrakt algorytmu, metodologia badań i notatki optymalizacyjne |
 
 ## CLI i wynik
