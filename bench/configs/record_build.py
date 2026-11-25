@@ -13,6 +13,12 @@ SOURCES = (
     "data/gen.py",
     "src/common/input.cpp",
     "src/common/input.hpp",
+    "src/common/nearest_search.cpp",
+    "src/common/nearest_search.hpp",
+    "src/common/solution.cpp",
+    "src/common/solution.hpp",
+    "src/common/solver_cli.cpp",
+    "src/common/solver_cli.hpp",
     "src/seq/build_info.hpp",
     "src/seq/phase_profile.hpp",
     "src/seq/s0.cpp",
@@ -37,32 +43,35 @@ def git(*args):
     return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
 
 
-def build_manifest(release, profile):
-    builds = {}
-    # Metadane odczytujemy z konkretnych binariów, także dla generatorów wielokonfiguracyjnych.
-    for name, executables, profiling in (("release", release, False), ("profile", profile, True)):
-        builds[name] = {}
-        for stage, executable in executables.items():
-            executable = executable.resolve(strict=True)
-            output = subprocess.check_output([str(executable), "--build-info"], text=True)
-            info = dict(line.split("=", 1) for line in output.splitlines())
-            if info["profile"] != str(int(profiling)):
-                raise ValueError(f"Nieprawidłowe ustawienie profilowania w {executable}")
-            builds[name][stage] = {
-                **file_record(executable),
-                "compiler": info["compiler"],
-                "configuration": info["configuration"],
-                "profiling": profiling,
-            }
+def executable_record(executable):
+    # Metadane odczytujemy z pliku wykonywalnego użytego w serii.
+    executable = executable.resolve(strict=True)
+    output = subprocess.check_output([str(executable), "--build-info"], text=True)
+    info = dict(line.split("=", 1) for line in output.splitlines())
+    return {
+        **file_record(executable),
+        "profiling": bool(int(info.pop("profile"))),
+        **info,
+    }
+
+
+def checkout_record(extra_sources=()):
     # Stan źródeł opisuje katalog w chwili pomiaru. Hash binarium identyfikuje użyty program.
     return {
-        "checkout": {
-            "commit": git("rev-parse", "HEAD"),
-            "dirty": bool(git("status", "--porcelain")),
-            "source_sha256": {name: file_record(ROOT / name)["sha256"] for name in SOURCES},
-        },
-        "executables": builds,
+        "commit": git("rev-parse", "HEAD"),
+        "dirty": bool(git("status", "--porcelain")),
+        "source_sha256": {name: file_record(ROOT / name)["sha256"] for name in (*SOURCES, *extra_sources)},
     }
+
+
+def build_manifest(release, profile):
+    builds = {}
+    for name, executables, profiling in (("release", release, False), ("profile", profile, True)):
+        builds[name] = {stage: executable_record(executable) for stage, executable in executables.items()}
+        for info in builds[name].values():
+            if info["profiling"] != profiling:
+                raise ValueError(f"Nieprawidłowe ustawienie profilowania w {info['path']}")
+    return {"checkout": checkout_record(), "executables": builds}
 
 
 def write_manifest(path, data):

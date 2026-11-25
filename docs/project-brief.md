@@ -50,4 +50,4 @@ Proponowany tekstowy format wejściowy ułatwia inspekcję na początku projektu
 
 ## Zakres tego szkieletu
 
-Dokumenty źródłowe zawierają także terminy zajęć i oddań. Są one wymaganiami kursu, a nie automatycznie terminami zapisanymi w konfiguracji repozytorium. Repozytorium ma generator danych, wspólny parser C++17 i polecenia budowania w README. Implementacja algorytmu, skrypty benchmarkowe i wyniki pozostają do przygotowania.
+Dokumenty źródłowe zawierają także terminy zajęć i oddań. Repozytorium ma generator danych, parser C++17, warianty S0, S1 i P1 oraz polecenia budowania i uruchamiania w README. Wariant CUDA i pełna seria E1–E7 pozostają do wykonania.

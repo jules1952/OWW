@@ -32,6 +32,8 @@ pm --variant seq|omp|cuda --instance data/X.txt --start data/S.txt --threads 8 -
 
 Sekwencyjny i CUDA wariant mogą ignorować `--threads`; pole pozostaje wspólne dla porównywalnego interfejsu. Nazwa backendu nie zmienia semantyki algorytmu.
 
+Aktualne programy to `pm_s0`, `pm_s1` i `pm_p1`. P1 przyjmuje dodatkowo `--threads N` po ścieżce CSV. Dla P1 pole `threads` w CSV oznacza największy faktyczny rozmiar zespołu w trakcie wyszukiwania. Jeśli wszystkie stacje są wybrane, P1 kończy pracę bez tworzenia zespołu i zapisuje `threads=1`.
+
 Wspólny CSV powinien zawierać kolumny:
 
 ```text
@@ -53,6 +55,8 @@ Jednostką czasu jest sekunda, pamięci MB, a `dist` identyfikuje metrykę. Hash
 ## Oczekiwana złożoność na iterację
 
 Niech `n=|D|`, `m=|F|`, a `p` oznacza liczbę wybieranych lokalizacji. S0 ma koszt `O(p^2 (m-p) n)` przy pełnym przeliczaniu kosztu dla każdej zamiany. S1/S2 i równoległe mapowania tej samej pracy mają koszt `O(p (m-p) n)` plus aktualizację struktur rzędu `O(np)`. Przejście na OpenMP lub CUDA zmienia czas wykonania, nie całkowitą pracę algorytmu. Złożoność całkowita zależy od liczby iteracji, której nie należy przedstawiać jako dobrze ograniczonej wielomianowo.
+
+P1 przydziela kandydatów `in` statycznie. Każdy wątek ma własny bufor `n` odległości i zapisuje swój najlepszy ruch. Po zakończeniu oceny wątek sterujący wybiera najlepszy z tych ruchów za pomocą wspólnego komparatora, zatwierdza go i odświeża dwie najbliższe stacje. Bufory są używane ponownie w kolejnych iteracjach.
 
 ## Pomiar GPU
 

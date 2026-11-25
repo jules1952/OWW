@@ -1,0 +1,421 @@
+{
+  "checkout": {
+    "commit": "a3a50b28a7c707978952401f8c540e688624ab2c",
+    "dirty": true,
+    "source_sha256": {
+      "CMakeLists.txt": "8278d4a603ca409accdcf12243f74c0f02e0c21594f3805e8d5878f33efe7b37",
+      "bench/configs/record_build.py": "5acba07553b6eaa3420ae4b9f806725e9d810f6ef5cc29ebc6d821726ec59d0b",
+      "bench/run_seq_profile.py": "16cd8be017f4316e7cc0f3122fc3fbe2edc9ab544c35fad7eaefcfc07e427219",
+      "data/gen.py": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "src/common/input.cpp": "8f0e4136f98a306312acbeb6e57358a3c2a68e9cc2540096ccbe9b7848502f8e",
+      "src/common/input.hpp": "faf21c848eb7a85acf915c87336713d0731c9ce82b3150d0daede5d7c721b1ed",
+      "src/common/nearest_search.cpp": "17253f887a609f5cad3119625350210b81fabf4ec646fb7b64c241c5be473ef9",
+      "src/common/nearest_search.hpp": "452fc05b9c6d9a6a9ba7453c06d0e842a0ad0b8180cf158d149037407e714342",
+      "src/common/solution.cpp": "6247d89596fbc63ef4f59873d2bf6c32943689f7fedecf07fa283525a5470c91",
+      "src/common/solution.hpp": "c2152cd552ef5984b69e11d9cfe9e1a588b2cec0a36bcb27cf2a8062cf0e7f38",
+      "src/common/solver_cli.cpp": "2553759a69610edbcf9138cacfd5b143f62fc591dd9f997e1a7b01b90698cef1",
+      "src/common/solver_cli.hpp": "cb960831f0180ff191cb0ba5662564b17c35af04d7976e818172792f3d8f3280",
+      "src/seq/build_info.hpp": "e010c0edbccaa763fd6c9454de8d800b724ad60eeee128b246bc7acc4ac8507f",
+      "src/seq/phase_profile.hpp": "4126367aa28b178945dc5e11e7bbcd18f375d8fcc8e9123b82204112c34d1c2e",
+      "src/seq/s0.cpp": "cd32b291cf74e9fed7dd1d2311c9e9f5dd5c7dfa44cc697e4c2b529de6aff024",
+      "src/seq/s0.hpp": "140c588f916912c05cfb43b623a44bb75ac5898ba59c9cf08178164a9230f601",
+      "src/seq/s0_main.cpp": "abbfe799b747e687cef308880c3c5f55cbceb7a1015414111213b06034c5c9be",
+      "src/seq/s1.cpp": "61c1b6000697239ae34dd30960b64575fde05a7720ef7a4bc991ae15c8572309",
+      "src/seq/s1.hpp": "24745ad562afb6f83c65630a4bfe5fc5add96d26281ff29cfdabd86efd143556",
+      "src/seq/s1_main.cpp": "2307cefe1e57d9f859c569699bff8ad4583cb778f497e952d7e40c37281f0458",
+      "src/omp/p1.cpp": "f60f82550fe78efad4d1deb8b2b0d14a26f8d090f8e978dd0a14c6cc68b075fb",
+      "src/omp/p1.hpp": "692db3557a3a1a3372a2676db69c13fd80c9e16faa8e99cfc0fc9de2b7af2b47",
+      "src/omp/p1_main.cpp": "f73e515ece45323c40cdae7b704a4da8a782c2e64432b4ab73df0b74a540d2e4",
+      "bench/run_omp_scaling.py": "10819788d1b0ba58b35023907e04dde657cf377e0a69f72836aa554365053467"
+    }
+  },
+  "executables": {
+    "s0": {
+      "path": "build/p1-release/pm_s0.exe",
+      "sha256": "98b78676d029993ee8684bceb5ff86300391c90ea817cd09f727aaa7f4bbb0f3",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release"
+    },
+    "s1": {
+      "path": "build/p1-release/pm_s1.exe",
+      "sha256": "2742f2520c465145d7e9816026f42607a46e37afafe3f511dd22b7113f97eeda",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release"
+    },
+    "p1": {
+      "path": "build/p1-release/pm_p1.exe",
+      "sha256": "eed1e5e72119ca3e73086b945dc83b18fe270f826565e4a90a0f3069704406cd",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "openmp": "2.0"
+    }
+  },
+  "config": {
+    "path": "bench/configs/p1-e1-e3.json",
+    "sha256": "c323c7f9e2d0d8297c95b130e9cf1446ff45501a95505f8153b472930e899d26"
+  },
+  "parameters": {
+    "threads": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "repetitions": 5,
+    "scaling": {
+      "directory": "data/generated/p1_e3",
+      "start": "start_p15_s1.txt"
+    },
+    "validation": [
+      "data/generated/p1_e1_clustered",
+      "data/generated/p1_e1_uniform"
+    ]
+  },
+  "datasets": {
+    "data/generated/p1_e3": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 3000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "780d9fc2b46352ec927bac7bd17b7973f256b3d9c0436ea2a64cc3dbb9bc1eee"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        },
+        {
+          "p": 15,
+          "seed": 2,
+          "file": "start_p15_s2.txt",
+          "sha256": "593c03727ef02311854f03ff8434f44d9a72b23acf48b9a841585ef81c720115"
+        },
+        {
+          "p": 15,
+          "seed": 3,
+          "file": "start_p15_s3.txt",
+          "sha256": "80ef3155547bcf5cba3f423e7f0337a3201a0cd373a6b7ac66eef7275df482e0"
+        },
+        {
+          "p": 15,
+          "seed": 4,
+          "file": "start_p15_s4.txt",
+          "sha256": "ca5964c47a4fd85b7b173963ed543cbb1fffe440e61e46f5ee44ee4d4a400e2e"
+        },
+        {
+          "p": 15,
+          "seed": 5,
+          "file": "start_p15_s5.txt",
+          "sha256": "8739605c53f7565f29f8a4915e911505a0e3dc0350ca8c7ddf8fd4a626db5ddb"
+        },
+        {
+          "p": 15,
+          "seed": 6,
+          "file": "start_p15_s6.txt",
+          "sha256": "9c7a458708845a9425054f07ff4d6da8f9529e3284af12e94b3d381b61ef6855"
+        },
+        {
+          "p": 15,
+          "seed": 7,
+          "file": "start_p15_s7.txt",
+          "sha256": "0bf3452161a763a5556d4e4a9da69804aeb2083f25f3b4bd6c70f158017b946e"
+        },
+        {
+          "p": 15,
+          "seed": 8,
+          "file": "start_p15_s8.txt",
+          "sha256": "228e70ebbcacb7daac2c3e6e5344dd29d5cda2da1fdc4ad5c02d37095be0e607"
+        },
+        {
+          "p": 15,
+          "seed": 9,
+          "file": "start_p15_s9.txt",
+          "sha256": "9876e2df356e926f05bddbd3d207808d2edeea236118450e6b0efd510de477db"
+        },
+        {
+          "p": 15,
+          "seed": 10,
+          "file": "start_p15_s10.txt",
+          "sha256": "27fc2fc21ff41ffaa132eec3d0d930512dee9b65ff7511195408812597ac8ba1"
+        }
+      ]
+    },
+    "data/generated/p1_e1_clustered": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 200,
+        "m": 30,
+        "p": [
+          5
+        ],
+        "distribution": "clustered",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 2,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [
+        [
+          4345.699066653769,
+          7157.517616575082
+        ],
+        [
+          7618.668747750259,
+          9500.617634115648
+        ],
+        [
+          9260.556091674596,
+          8920.17472579654
+        ],
+        [
+          3567.67851352472,
+          436.0526279098076
+        ],
+        [
+          8848.00702585243,
+          9238.000081192258
+        ]
+      ],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "792813ace274213a1f2b18310599b85f5825c4aaf6f9abadc7a6fde1c2645f36"
+      },
+      "starts": [
+        {
+          "p": 5,
+          "seed": 1,
+          "file": "start_p5_s1.txt",
+          "sha256": "6c1fea4518a6f2f4265c6fabd9fc460bce081cba1f3a1ec2c49f282e36eadac6"
+        },
+        {
+          "p": 5,
+          "seed": 2,
+          "file": "start_p5_s2.txt",
+          "sha256": "045b6a7b8b5bd0c3f174a857026d1d879c2e7e9a6ad9baed7fad7b13b0c69d45"
+        },
+        {
+          "p": 5,
+          "seed": 3,
+          "file": "start_p5_s3.txt",
+          "sha256": "e0dea378102bb72dc8a61f87b5ae1591c67ade3363a4bc059c7c8665a49c961f"
+        },
+        {
+          "p": 5,
+          "seed": 4,
+          "file": "start_p5_s4.txt",
+          "sha256": "781359f0675781d6111219d396a338745293ab9fbb5660ec5b14ba495305d157"
+        },
+        {
+          "p": 5,
+          "seed": 5,
+          "file": "start_p5_s5.txt",
+          "sha256": "e71f56830ce34df771377ac6d9bf9d90a0527f4508e4fa0e3f01de9bfa12718a"
+        },
+        {
+          "p": 5,
+          "seed": 6,
+          "file": "start_p5_s6.txt",
+          "sha256": "dfca4d7630e7c1b0dee2d5295fb29d81b1ec53d5ec7c543293ba9ec431ae4134"
+        },
+        {
+          "p": 5,
+          "seed": 7,
+          "file": "start_p5_s7.txt",
+          "sha256": "f2d414ffa6d2b9a4f1c38b3b8df5bc79051eceb9f99f4b7f99f0337928e202a2"
+        },
+        {
+          "p": 5,
+          "seed": 8,
+          "file": "start_p5_s8.txt",
+          "sha256": "fecc6c1143a318239713425b41e7cf25097693d8e36e729411d3afb159f99ab0"
+        },
+        {
+          "p": 5,
+          "seed": 9,
+          "file": "start_p5_s9.txt",
+          "sha256": "4d098615f1617b140b1a9e4f6895adc5d111a766977c026883234a47b1f076b2"
+        },
+        {
+          "p": 5,
+          "seed": 10,
+          "file": "start_p5_s10.txt",
+          "sha256": "75836ac3307ff7b3b91a60e8f2dbdbb91607c3acd62f5333b311265fbb00cb89"
+        }
+      ]
+    },
+    "data/generated/p1_e1_uniform": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 200,
+        "m": 30,
+        "p": [
+          5
+        ],
+        "distribution": "uniform",
+        "weights": "unit",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "bb426bba57436b42595c7a00faea0172813af8498d0765c92738fecad2d03a44"
+      },
+      "starts": [
+        {
+          "p": 5,
+          "seed": 1,
+          "file": "start_p5_s1.txt",
+          "sha256": "6c1fea4518a6f2f4265c6fabd9fc460bce081cba1f3a1ec2c49f282e36eadac6"
+        },
+        {
+          "p": 5,
+          "seed": 2,
+          "file": "start_p5_s2.txt",
+          "sha256": "045b6a7b8b5bd0c3f174a857026d1d879c2e7e9a6ad9baed7fad7b13b0c69d45"
+        },
+        {
+          "p": 5,
+          "seed": 3,
+          "file": "start_p5_s3.txt",
+          "sha256": "e0dea378102bb72dc8a61f87b5ae1591c67ade3363a4bc059c7c8665a49c961f"
+        },
+        {
+          "p": 5,
+          "seed": 4,
+          "file": "start_p5_s4.txt",
+          "sha256": "781359f0675781d6111219d396a338745293ab9fbb5660ec5b14ba495305d157"
+        },
+        {
+          "p": 5,
+          "seed": 5,
+          "file": "start_p5_s5.txt",
+          "sha256": "e71f56830ce34df771377ac6d9bf9d90a0527f4508e4fa0e3f01de9bfa12718a"
+        },
+        {
+          "p": 5,
+          "seed": 6,
+          "file": "start_p5_s6.txt",
+          "sha256": "dfca4d7630e7c1b0dee2d5295fb29d81b1ec53d5ec7c543293ba9ec431ae4134"
+        },
+        {
+          "p": 5,
+          "seed": 7,
+          "file": "start_p5_s7.txt",
+          "sha256": "f2d414ffa6d2b9a4f1c38b3b8df5bc79051eceb9f99f4b7f99f0337928e202a2"
+        },
+        {
+          "p": 5,
+          "seed": 8,
+          "file": "start_p5_s8.txt",
+          "sha256": "fecc6c1143a318239713425b41e7cf25097693d8e36e729411d3afb159f99ab0"
+        },
+        {
+          "p": 5,
+          "seed": 9,
+          "file": "start_p5_s9.txt",
+          "sha256": "4d098615f1617b140b1a9e4f6895adc5d111a766977c026883234a47b1f076b2"
+        },
+        {
+          "p": 5,
+          "seed": 10,
+          "file": "start_p5_s10.txt",
+          "sha256": "75836ac3307ff7b3b91a60e8f2dbdbb91607c3acd62f5333b311265fbb00cb89"
+        }
+      ]
+    }
+  },
+  "host": {
+    "system": "Windows-10-10.0.19045-SP0",
+    "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+    "logical_cpus": 16,
+    "python": "3.12.14"
+  },
+  "openmp_environment": {
+    "OMP_DYNAMIC": "FALSE"
+  },
+  "timing": {
+    "t_prep": "C++ instance and start file parsing",
+    "t_search": "C++ solver call",
+    "t_total": "wall clock around the C++ process including file and console I/O"
+  }
+}

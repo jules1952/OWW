@@ -4,10 +4,7 @@
 #endif
 #include <algorithm>
 #include <cmath>
-#include <cstdint>
-#include <iomanip>
 #include <limits>
-#include <sstream>
 #include <stdexcept>
 #include <utility>
 
@@ -42,13 +39,7 @@ S0Result solve_s0(const Instance& instance, StationSet stations) {
     PhaseProfile initial_profile("initial_cost");
     PhaseProfile swap_profile("trial_cost");
 #endif
-    constexpr double epsilon = 1e-9;
-    if (instance.demand.empty() || instance.candidates.empty() || stations.empty())
-        throw std::runtime_error("Instancja i zbior stacji nie moga byc puste.");
-    std::sort(stations.begin(), stations.end());
-    if (stations.back() >= instance.candidates.size() ||
-        std::adjacent_find(stations.begin(), stations.end()) != stations.end())
-        throw std::runtime_error("Niepoprawny zbior stacji.");
+    validate_stations(instance, stations);
 
     S0Result result;
     {
@@ -62,10 +53,7 @@ S0Result solve_s0(const Instance& instance, StationSet stations) {
 
     while (true) {
         auto trial = stations;
-        double best_delta = 0.0, best_cost = result.cost;
-        bool found = false;
-        std::size_t best_position = 0;
-        std::pair<std::size_t, std::size_t> best_move{};
+        SwapMove best;
 
         // Wszystkie ruchy oceniamy względem jednego bieżącego rozwiązania.
         for (std::size_t position = 0; position < stations.size(); ++position) {
@@ -80,47 +68,23 @@ S0Result solve_s0(const Instance& instance, StationSet stations) {
 #endif
                     candidate_cost = cost_of(instance, trial);
                 }
-                const double delta = candidate_cost - result.cost;
-                const auto move = std::make_pair(out, in);
-                if (delta < best_delta ||
-                    (found && delta == best_delta && move < best_move)) {
-                    found = true;
-                    best_delta = delta;
-                    best_cost = candidate_cost;
-                    best_move = move;
-                    best_position = position;
-                }
+                keep_best(best, {candidate_cost - result.cost, candidate_cost, out, in, position});
             }
             trial[position] = out;
         }
 
-        if (!found || !(best_delta < -epsilon * result.cost)) break;
+        if (!improves(best, result.cost)) break;
 
         // Zatwierdzamy tylko jedną, najlepszą zamianę z całego przeglądu.
-        selected[best_move.first] = false;
-        selected[best_move.second] = true;
-        stations[best_position] = best_move.second;
+        selected[best.out] = false;
+        selected[best.in] = true;
+        stations[best.position] = best.in;
         std::sort(stations.begin(), stations.end());
-        result.cost = best_cost;
+        result.cost = best.cost;
         ++result.iterations;
     }
     result.stations = std::move(stations);
     return result;
-}
-
-std::string station_set_hash(const StationSet& sorted_stations) {
-    // FNV-1a 64-bit; indeksy po 8 bajtów little-endian, niezależnie od size_t.
-    std::uint64_t hash = UINT64_C(14695981039346656037);
-    for (auto station : sorted_stations) {
-        const auto value = static_cast<std::uint64_t>(station);
-        for (unsigned shift = 0; shift < 64; shift += 8) {
-            hash ^= (value >> shift) & 0xffu;
-            hash *= UINT64_C(1099511628211);
-        }
-    }
-    std::ostringstream text;
-    text << std::hex << std::setw(16) << std::setfill('0') << hash;
-    return text.str();
 }
 
 } // namespace pmedian

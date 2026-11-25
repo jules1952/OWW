@@ -2,7 +2,7 @@
 
 Repozytorium przygotowuje porównanie trzech implementacji heurystyki Vertex Substitution dla ważonego problemu p-median: sekwencyjnej na CPU, wielowątkowej z OpenMP oraz hybrydowej CPU+GPU z CUDA. C++17 obsługuje obliczenia mierzone, a Python generowanie instancji, uruchamianie eksperymentów i analizę wyników.
 
-Repozytorium zawiera generator danych, wspólny parser C++17 oraz dwa etapy wersji sekwencyjnej.
+Repozytorium zawiera generator danych, wspólny parser C++17, warianty sekwencyjne S0 i S1 oraz OpenMP P1.
 
 ## Generowanie pierwszych danych
 
@@ -34,6 +34,17 @@ Przy bezpośrednim uruchomieniu `t_prep` mierzy odczyt instancji i startu, a `t_
 S0 przelicza pełny koszt każdej próbnej zamiany. S1 zapamiętuje dla każdego punktu dwie najmniejsze odległości do wybranych stacji. W każdej iteracji liczy odległości do dodawanego kandydata raz i wykorzystuje je we wszystkich próbach z tym kandydatem. Oba programy oceniają wszystkie zamiany, wybierają najlepszą i kończą, gdy poprawa nie przekracza ustalonego progu. [Dokumentacja S0 i S1](docs/iterations/S0-S1.md) zawiera historię zmian, profilowanie i instrukcję odtworzenia pomiarów.
 
 Wspólny moduł `pmedian_common` udostępnia `read_instance` i `read_start` przez [input.hpp](src/common/input.hpp). Parser sprawdza układ wierszy i wartości, a przy błędzie zgłasza wyjątek z nazwą pliku i numerem wiersza, jeśli udało się rozpocząć odczyt.
+
+## Budowanie i uruchamianie OpenMP P1
+
+```powershell
+cmake -S . -B build/p1-release -G Ninja -DCMAKE_BUILD_TYPE=Release -DPMEDIAN_ENABLE_OPENMP=ON
+cmake --build build/p1-release
+ctest --test-dir build/p1-release --output-on-failure
+build/p1-release/pm_p1.exe data/generated/uniform_demo/instance.txt data/generated/uniform_demo/start_p5_s1.txt results/raw/demo_p1.csv --threads 8
+```
+
+`--threads N` podaje maksymalną liczbę wątków P1. Domyślnie program używa jednego. CSV zapisuje największy faktyczny rozmiar zespołu podczas wyszukiwania. P1 rozdziela między wątki kandydatów do dodania i scala ich najlepsze ruchy po zakończeniu równoległego przeglądu. [Szczegóły, walidacja i pomiary P1](docs/iterations/03-p1-openmp.md).
 
 ## Zacznij tutaj
 

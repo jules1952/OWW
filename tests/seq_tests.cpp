@@ -1,7 +1,12 @@
 #include "../src/seq/s0.hpp"
 #include "../src/seq/s1.hpp"
+#ifdef PMEDIAN_TEST_OPENMP
+#include "../src/omp/p1.hpp"
+#include <stdexcept>
+#endif
 
 #include <iostream>
+#include <limits>
 
 namespace {
 
@@ -28,8 +33,32 @@ bool check(const char* name, const Instance& instance, const StationSet& start,
         std::cerr << name << ": S1 returned an unexpected result\n";
         ok = false;
     }
+#ifdef PMEDIAN_TEST_OPENMP
+    for (int requested : {1, 2, 4}) {
+        const auto p1 = pmedian::solve_p1(instance, start, requested);
+        if (!matches(p1, cost, stations, iterations) || p1.threads < 1 || p1.threads > requested ||
+            (start.size() == instance.candidates.size() && p1.threads != 1)) {
+            std::cerr << name << ": P1 returned an unexpected result with " << requested << " threads\n";
+            ok = false;
+        }
+    }
+#endif
     return ok;
 }
+
+#ifdef PMEDIAN_TEST_OPENMP
+bool check_worker_exception() {
+    const double limit = std::numeric_limits<double>::max();
+    const Instance instance{{{{limit, 0}, 1}}, {{limit, 0}, {limit, 1}, {-limit, 0}}};
+    try {
+        pmedian::solve_p1(instance, {0}, 2);
+    } catch (const std::runtime_error&) {
+        return true;
+    }
+    std::cerr << "P1 did not propagate distance overflow from an OpenMP worker\n";
+    return false;
+}
+#endif
 
 } // namespace
 
@@ -53,5 +82,8 @@ int main() {
                 {{{{0, 0}, 1}}, {{1e9, 0}, {999999998, 0}}}, {0}, 999999998.0, {1}, 1);
     ok &= check("weighted Euclidean cost",
                 {{{{0, 0}, 3}, {{3, 4}, 1}}, {{3, 4}, {0, 0}, {0, 4}}}, {0}, 5.0, {1}, 1);
+#ifdef PMEDIAN_TEST_OPENMP
+    ok &= check_worker_exception();
+#endif
     return ok ? 0 : 1;
 }

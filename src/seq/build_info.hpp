@@ -11,6 +11,9 @@ inline bool print_build_info_if_requested(int argc, char** argv) {
     std::cout << "compiler=" << PMEDIAN_BUILD_COMPILER
               << "\nconfiguration=" << PMEDIAN_BUILD_CONFIG
               << "\nprofile=" << PMEDIAN_BUILD_PROFILE << '\n';
+#ifdef PMEDIAN_BUILD_OPENMP
+    std::cout << "openmp=" << PMEDIAN_BUILD_OPENMP << '\n';
+#endif
     return true;
 }
 

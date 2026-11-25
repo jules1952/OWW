@@ -14,10 +14,10 @@ REPETITIONS = 5
 METRICS = ("t_search", "t_total")
 
 
-def run_solver(executable, instance, start, path, repetition):
-    command = [str(executable.resolve()), str(instance), str(start), str(path)]
+def run_solver(executable, instance, start, path, repetition, *, solver_args=(), env=None):
+    command = [str(executable.resolve()), str(instance), str(start), str(path), *solver_args]
     begin = perf_counter()
-    run = subprocess.run(command, capture_output=True, text=True)
+    run = subprocess.run(command, capture_output=True, text=True, env=env)
     total = perf_counter() - begin
     if run.returncode:
         raise RuntimeError(f"{executable} zakończył się kodem {run.returncode}: {run.stderr.strip()}")
@@ -41,6 +41,13 @@ def run_solver(executable, instance, start, path, repetition):
     stations = path.with_suffix(".csv.stations.txt").read_text().split()
     signature = (row["final_set_hash"], int(row["iterations"]), tuple(map(int, stations[1:])))
     return row, signature, run.stderr
+
+
+def check_solution(reference, result, context):
+    reference_cost, reference_signature = reference
+    cost, signature = result
+    if signature != reference_signature or abs(cost - reference_cost) > 1e-6 * abs(reference_cost):
+        raise ValueError(f"Rozbieżność wyniku w {context}")
 
 
 def main():
@@ -91,9 +98,7 @@ def main():
                 cost = float(row["cost"])
                 if reference is None:
                     reference = (cost, signature)
-                reference_cost, reference_signature = reference
-                if signature != reference_signature or abs(cost - reference_cost) > 1e-6 * abs(reference_cost):
-                    raise ValueError(f"Rozbieżność wyniku w {path}")
+                check_solution(reference, (cost, signature), path)
                 if profiling:
                     phases = list(csv.reader(stderr.splitlines()))
                     if not phases or any(len(phase) != 3 for phase in phases):

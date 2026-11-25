@@ -1,0 +1,12 @@
+{
+  "threads": [1, 2, 4, 8, 16],
+  "repetitions": 5,
+  "scaling": {
+    "directory": "data/generated/p1_e3",
+    "start": "start_p15_s1.txt"
+  },
+  "validation": [
+    "data/generated/p1_e1_clustered",
+    "data/generated/p1_e1_uniform"
+  ]
+}
