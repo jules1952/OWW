@@ -1,2 +1,0 @@
-variant,instance,dist,n,m,p,threads,rep,t_prep,t_h2d,t_search,t_d2h,t_total,iterations,cost,peak_ram_mb,gpu_mem_mb,final_set_hash
-seq,data/generated/seq_end_to_end/instance.txt,euclidean,1000,100,10,1,2,0.0012413999999999999,0,0.0094868000000000001,0,0.017980300006456673,9,32541187.262297336,,,b6d7ddd3409dc132

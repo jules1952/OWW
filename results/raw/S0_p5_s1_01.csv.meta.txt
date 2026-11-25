@@ -1,8 +1,0 @@
-stage=S0-direct
-instance=C:\Users\user/Desktop/Rowery/Rowery/data/generated/proba_01/instance.txt
-start=C:\Users\user/Desktop/Rowery/Rowery/data/generated/proba_01/start_p5_s1.txt
-epsilon=1e-9
-precision=double
-warmups=0
-hash=FNV1a64_u64_little_endian
-timing=full_solve_s0_excludes_file_IO

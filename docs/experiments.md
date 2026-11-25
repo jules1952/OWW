@@ -21,6 +21,12 @@ Badania opisane w materiałach źródłowych obejmują następujące pytania. Ka
 - Dla GPU pokaż czas całkowity z transferami oraz rozbicie `t_prep`, `t_h2d`, `t_search`, `t_d2h`.
 - Wykresy generuj ze źródłowych CSV. Podpisuj osie i jednostki.
 
+## Zapis wyników
+
+Każdy wiersz zbiorczego CSV odpowiada pojedynczemu uruchomieniu. Skrypt sekwencyjny zapisuje `measurements.csv`, `warmup.csv`, `profile-runs.csv`, `phases.csv` i `manifest.json`. Skrypt P1 zapisuje `scaling.csv`, `warmup.csv`, `validation.csv` i `manifest.json`. W nowych tabelach `station_indices` zawiera indeksy stacji rozdzielone spacjami.
+
+W archiwalnych seriach sekwencyjnych `source_file` wskazuje pierwotny plik względem `results/raw/`, a `metadata_id` odsyła do treści jego metadanych w `archive.metadata` w manifeście. Pole `rep` zachowuje wartość z pierwotnego CSV. `run_number` zawiera numer odczytany z nazwy pliku, jeśli był w niej zapisany. [Pojedyncze wcześniejsze uruchomienia](../results/raw/seq-standalone/runs.csv) pozostają we wspólnej tabeli.
+
 ## Metryki
 
 Dla `T` wątków i sekwencyjnego czasu `t_1`:

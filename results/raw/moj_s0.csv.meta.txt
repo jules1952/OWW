@@ -1,8 +1,0 @@
-stage=S0-direct
-instance=.\data\generated\test_s1_200_30\instance.txt
-start=.\data\generated\test_s1_200_30\start_p5_s1.txt
-epsilon=1e-9
-precision=double
-warmups=0
-hash=FNV1a64_u64_little_endian
-timing=full_solve_s0_excludes_file_IO

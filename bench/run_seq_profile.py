@@ -6,6 +6,7 @@ from pathlib import Path
 import platform
 import statistics
 import subprocess
+from tempfile import TemporaryDirectory
 from time import perf_counter
 
 from configs.record_build import build_manifest, file_record, write_manifest
@@ -23,23 +24,18 @@ def run_solver(executable, instance, start, path, repetition, *, solver_args=(),
         raise RuntimeError(f"{executable} zakończył się kodem {run.returncode}: {run.stderr.strip()}")
 
     with path.open(newline="", encoding="utf-8") as result:
-        reader = csv.DictReader(result)
-        row, = reader
-        fields = reader.fieldnames
+        row, = csv.DictReader(result)
 
     # Zegar obejmuje proces C++, łącznie z jego zapisem plików. Uzupełnienie CSV
     # przez Pythona odbywa się po pomiarze, tak samo jak odczyt wyników do walidacji.
     row["rep"] = "" if repetition == "profile" else str(repetition)
     row["t_total"] = format(total, ".17g")
-    updated = path.with_suffix(".tmp")
-    with updated.open("x", newline="", encoding="utf-8") as result:
-        writer = csv.DictWriter(result, fieldnames=fields, lineterminator="\n")
-        writer.writeheader()
-        writer.writerow(row)
-    updated.replace(path)
-
-    stations = path.with_suffix(".csv.stations.txt").read_text().split()
-    signature = (row["final_set_hash"], int(row["iterations"]), tuple(map(int, stations[1:])))
+    with path.with_suffix(".csv.stations.txt").open(encoding="utf-8") as result:
+        size, *stations = map(int, result.read().split())
+    if size != len(stations) or size != int(row["p"]):
+        raise ValueError(f"Niezgodna liczba stacji w {path}")
+    row["station_indices"] = " ".join(map(str, stations))
+    signature = (row["final_set_hash"], int(row["iterations"]), tuple(stations))
     return row, signature, run.stderr
 
 
@@ -48,6 +44,13 @@ def check_solution(reference, result, context):
     cost, signature = result
     if signature != reference_signature or abs(cost - reference_cost) > 1e-6 * abs(reference_cost):
         raise ValueError(f"Rozbieżność wyniku w {context}")
+
+
+def write_rows(path, rows):
+    with path.open("x", newline="", encoding="utf-8") as output:
+        writer = csv.DictWriter(output, fieldnames=list(rows[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def main():
@@ -80,12 +83,15 @@ def main():
         },
     })
     args.out.mkdir(parents=True)
-    write_manifest(args.out / "manifest.json", manifest)
+    measurements = []
+    warmups = []
+    profile_runs = []
+    solver_metadata = {}
     timings = {stage: {metric: [] for metric in METRICS} for stage in release}
     reference = None
-    with (args.out / "phases.csv").open("x", newline="", encoding="utf-8") as output:
-        writer = csv.writer(output, lineterminator="\n")
-        writer.writerow(["stage", "phase", "calls", "seconds"])
+    phases = []
+    # Solver nadal zapisuje własne pliki. Benchmark po walidacji publikuje tylko tabele serii.
+    with TemporaryDirectory(dir=args.out) as temporary:
         for repetition in [*range(REPETITIONS + 1), "profile"]:
             stages = ("s0", "s1")
             if repetition != "profile" and repetition % 2:
@@ -93,20 +99,36 @@ def main():
             for stage in stages:
                 profiling = repetition == "profile"
                 executable = (profile if profiling else release)[stage]
-                path = args.out / f"{stage}-{repetition}.csv"
+                path = Path(temporary) / f"{stage}-{repetition}.csv"
                 row, signature, stderr = run_solver(executable, args.instance, args.start, path, repetition)
                 cost = float(row["cost"])
                 if reference is None:
                     reference = (cost, signature)
-                check_solution(reference, (cost, signature), path)
+                check_solution(reference, (cost, signature), path.name)
+                details = path.with_suffix(".csv.meta.txt").read_bytes().decode("utf-8")
+                if solver_metadata.setdefault(stage, details) != details:
+                    raise ValueError(f"Niespójne metadane solvera w {path.name}")
+                row = {"stage": stage, "start": args.start.as_posix(), **row}
                 if profiling:
-                    phases = list(csv.reader(stderr.splitlines()))
-                    if not phases or any(len(phase) != 3 for phase in phases):
+                    profile_rows = list(csv.reader(stderr.splitlines()))
+                    if not profile_rows or any(len(phase) != 3 for phase in profile_rows):
                         raise ValueError(f"Niepoprawny profil faz z {executable}")
-                    writer.writerows([stage, *phase] for phase in phases)
+                    phases.extend({"stage": stage, "phase": name, "calls": calls, "seconds": seconds}
+                                  for name, calls, seconds in profile_rows)
+                    profile_runs.append(row)
                 elif repetition:
+                    measurements.append(row)
                     for metric in METRICS:
                         timings[stage][metric].append(float(row[metric]))
+                else:
+                    warmups.append(row)
+
+    write_rows(args.out / "measurements.csv", measurements)
+    write_rows(args.out / "warmup.csv", warmups)
+    write_rows(args.out / "profile-runs.csv", profile_runs)
+    write_rows(args.out / "phases.csv", phases)
+    manifest["solver_metadata"] = solver_metadata
+    write_manifest(args.out / "manifest.json", manifest)
 
     for metric in METRICS:
         medians = {}

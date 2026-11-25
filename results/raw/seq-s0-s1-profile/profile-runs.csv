@@ -1,0 +1,3 @@
+stage,start,run_number,variant,instance,dist,n,m,p,threads,rep,t_prep,t_h2d,t_search,t_d2h,t_total,iterations,cost,peak_ram_mb,gpu_mem_mb,final_set_hash,station_indices,metadata_id,source_file
+s0,data\generated\seq_profile_1000_100\start_p10_s1.txt,,seq,data/generated/seq_profile_1000_100/instance.txt,euclidean,1000,100,10,1,1,0,0,0.54668229999999995,0,0.54668229999999995,9,32541187.262297336,,,b6d7ddd3409dc132,2 16 22 40 48 56 60 76 89 90,m1,seq-s0-s1-profile/s0-profile.csv
+s1,data\generated\seq_profile_1000_100\start_p10_s1.txt,,seq,data/generated/seq_profile_1000_100/instance.txt,euclidean,1000,100,10,1,1,0,0,0.071161699999999994,0,0.071161699999999994,9,32541187.262297336,,,b6d7ddd3409dc132,2 16 22 40 48 56 60 76 89 90,m2,seq-s0-s1-profile/s1-profile.csv

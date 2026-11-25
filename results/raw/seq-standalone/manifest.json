@@ -1,0 +1,11 @@
+{
+  "archive": {
+    "source_commit": "8230a16816ebd3c915875db63f17cb0d214f4cad",
+    "metadata": {
+      "m1": "stage=S0-direct\r\ninstance=.\\data\\generated\\test_s1_200_30\\instance.txt\r\nstart=.\\data\\generated\\test_s1_200_30\\start_p5_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s0_excludes_file_IO\r\n",
+      "m2": "stage=S1-nearest2\r\ninstance=.\\data\\generated\\test_s1_200_30\\instance.txt\r\nstart=.\\data\\generated\\test_s1_200_30\\start_p5_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s1_excludes_file_IO\r\n",
+      "m3": "stage=S0-direct\r\ninstance=data/generated/uniform_5000_500/instance.txt\r\nstart=data/generated/uniform_5000_500/start_p20_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s0_excludes_file_IO\r\n",
+      "m4": "stage=S0-direct\r\ninstance=C:\\Users\\user/Desktop/Rowery/Rowery/data/generated/proba_01/instance.txt\r\nstart=C:\\Users\\user/Desktop/Rowery/Rowery/data/generated/proba_01/start_p5_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s0_excludes_file_IO\r\n"
+    }
+  }
+}

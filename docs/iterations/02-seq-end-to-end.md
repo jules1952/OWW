@@ -6,7 +6,7 @@ Serię wykonano 25 listopada 2026 r. na Windows 10 (19045), na procesorze Intel 
 
 W poprzedniej serii `t_total` powielał czas solvera. W tej serii `t_prep` mierzy odczyt instancji i startu, a `t_search` mierzy wywołanie solvera. Zewnętrzny zegar obejmuje uruchomienie procesu, odczyt danych, obliczenia, zapis plików i odbiór wyjścia na konsolę. Skrypt zapisuje ten czas w `t_total` po zakończeniu procesu. Przy uruchomieniu samego programu pole `t_total` jest puste.
 
-Dla każdego solvera wykonano jedną rozgrzewkę z `rep=0`, pięć pomiarów z `rep=1–5` i osobny przebieg z profilowaniem oraz pustym `rep`. W pomiarach zmieniano kolejność S0/S1 między kolejnymi powtórzeniami. Skrypt porównuje koszt z tolerancją względną `1e-6`, zestaw stacji, hash i liczbę iteracji. Manifest odczytuje kompilator, konfigurację i ustawienie profilowania bezpośrednio z użytych programów.
+Dla każdego solvera wykonano jedną rozgrzewkę z `rep=0`, pięć pomiarów z `rep=1–5` i osobny przebieg z profilowaniem oraz pustym `rep`. W pomiarach zmieniano kolejność S0/S1 między kolejnymi powtórzeniami. Skrypt porównuje koszt z tolerancją względną `1e-6`, zestaw stacji, hash i liczbę iteracji. Manifest odczytuje kompilator, konfigurację i ustawienie profilowania bezpośrednio z użytych programów. [Tabela pomiarów](../../results/raw/seq-s0-s1-end-to-end/measurements.csv) · [Rozgrzewki](../../results/raw/seq-s0-s1-end-to-end/warmup.csv) · [Przebiegi profilowane](../../results/raw/seq-s0-s1-end-to-end/profile-runs.csv).
 
 ## Wyniki
 

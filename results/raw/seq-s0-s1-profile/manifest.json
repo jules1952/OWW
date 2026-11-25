@@ -1,0 +1,9 @@
+{
+  "archive": {
+    "source_commit": "8230a16816ebd3c915875db63f17cb0d214f4cad",
+    "metadata": {
+      "m1": "stage=S0-direct\r\ninstance=data\\generated\\seq_profile_1000_100\\instance.txt\r\nstart=data\\generated\\seq_profile_1000_100\\start_p10_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s0_excludes_file_IO\r\n",
+      "m2": "stage=S1-nearest2\r\ninstance=data\\generated\\seq_profile_1000_100\\instance.txt\r\nstart=data\\generated\\seq_profile_1000_100\\start_p10_s1.txt\r\nepsilon=1e-9\r\nprecision=double\r\nwarmups=0\r\nhash=FNV1a64_u64_little_endian\r\ntiming=full_solve_s1_excludes_file_IO\r\n"
+    }
+  }
+}

@@ -1,8 +1,0 @@
-stage=S1-nearest2-candidate-cache
-instance=data\generated\seq_profile_1000_100\instance.txt
-start=data\generated\seq_profile_1000_100\start_p10_s1.txt
-epsilon=1e-9
-precision=double
-warmups=0
-hash=FNV1a64_u64_little_endian
-timing=full_solve_s1_excludes_file_IO

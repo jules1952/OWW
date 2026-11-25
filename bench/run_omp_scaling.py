@@ -1,6 +1,5 @@
 """Sprawdza P1 względem S0 i porównuje skalowanie OpenMP z S1."""
 import argparse
-import csv
 import json
 import os
 from pathlib import Path
@@ -9,7 +8,7 @@ import statistics
 from tempfile import TemporaryDirectory
 
 from configs.record_build import checkout_record, executable_record, file_record, write_manifest
-from run_seq_profile import check_solution, run_solver
+from run_seq_profile import check_solution, run_solver, write_rows
 
 
 def read_dataset(folder):
@@ -20,13 +19,6 @@ def read_dataset(folder):
         if file_record(path)["sha256"] != entry["sha256"]:
             raise ValueError(f"Niezgodna suma kontrolna {path}")
     return dataset
-
-
-def write_rows(path, rows):
-    with path.open("x", newline="", encoding="utf-8") as output:
-        writer = csv.DictWriter(output, fieldnames=list(rows[0]), lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
 
 
 def main():
