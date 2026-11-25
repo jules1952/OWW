@@ -1,0 +1,2 @@
+variant,instance,dist,n,m,p,threads,rep,t_prep,t_h2d,t_search,t_d2h,t_total,iterations,cost,peak_ram_mb,gpu_mem_mb,final_set_hash
+seq,"C:/Users/user/Desktop/Rowery/Rowery/data/generated/proba_01/instance.txt",euclidean,1000,100,5,1,1,0,0,0.13920179999999999,0,0.13920179999999999,6,46963742.989434026,,,2e7359c2ca2401c7

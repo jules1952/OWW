@@ -1,0 +1,2 @@
+variant,instance,dist,n,m,p,threads,rep,t_prep,t_h2d,t_search,t_d2h,t_total,iterations,cost,peak_ram_mb,gpu_mem_mb,final_set_hash
+seq,"data/generated/uniform_5000_500/instance.txt",euclidean,5000,500,20,1,1,0,0,272.0795584,0,272.0795584,32,113482789.06957318,,,4dcbb967fa43357f

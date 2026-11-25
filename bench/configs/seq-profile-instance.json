@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "generator": "pmedian-stdlib-v1",
+  "generator_sha256": "ffc8e885f16a8badfa1b021560e22d139ea527f3977c99ec7ddc675f66e30901",
+  "python_version": "3.12.6",
+  "units": "metres",
+  "distance": "euclidean",
+  "index_base": 0,
+  "config": {
+    "n": 1000,
+    "m": 100,
+    "p": [
+      10
+    ],
+    "distribution": "uniform",
+    "weights": "lognormal",
+    "size": 10000,
+    "clusters": 5,
+    "sigma": 500,
+    "background": 0.05,
+    "seed": 1,
+    "start_seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "cluster_centers": [],
+  "instance": {
+    "file": "instance.txt",
+    "sha256": "beac8cb3fc6cd53611656f2425291853045b55f11f405eb485289ecc53a42f31"
+  },
+  "starts": [
+    {
+      "p": 10,
+      "seed": 1,
+      "file": "start_p10_s1.txt",
+      "sha256": "b4adbc1d93bb2144e5802b55dd4970e974d1e357b1fed99367fca94b5265371b"
+    },
+    {
+      "p": 10,
+      "seed": 2,
+      "file": "start_p10_s2.txt",
+      "sha256": "06147e386c49543e9c6469d5c6eb5b0b71ce44de24bc3e27ac19166e5a4dda8c"
+    },
+    {
+      "p": 10,
+      "seed": 3,
+      "file": "start_p10_s3.txt",
+      "sha256": "0026ee93d86cb9d8697dafe2115db83c7bdaa4a8d3cf003d1681cbdab45693d3"
+    },
+    {
+      "p": 10,
+      "seed": 4,
+      "file": "start_p10_s4.txt",
+      "sha256": "54a02e28460e01cefdeee060a41baafacb26da61b17d2f0612d9ab995ef55137"
+    },
+    {
+      "p": 10,
+      "seed": 5,
+      "file": "start_p10_s5.txt",
+      "sha256": "60119f716db7ec8475eeebb86db98f536e44ce5b1112f72457a931f483234f52"
+    },
+    {
+      "p": 10,
+      "seed": 6,
+      "file": "start_p10_s6.txt",
+      "sha256": "ba0efc889400ca56b0ef376f0c039c6456a5455ad53eae2097666eab003a1732"
+    },
+    {
+      "p": 10,
+      "seed": 7,
+      "file": "start_p10_s7.txt",
+      "sha256": "d1ba1471cd7319d4ee2a8854ce13d2e8bd32d27063d60004d0ac6e131a6bb4c5"
+    },
+    {
+      "p": 10,
+      "seed": 8,
+      "file": "start_p10_s8.txt",
+      "sha256": "aef5827da47c4e8f6fbf6d9bdb03172e9a3e4a469bd9711b452f450fc2485ce0"
+    },
+    {
+      "p": 10,
+      "seed": 9,
+      "file": "start_p10_s9.txt",
+      "sha256": "1b25d881d7945c5c1be0c7b281261c7c5902e722c7cf0003d4eee78a215a9cb8"
+    },
+    {
+      "p": 10,
+      "seed": 10,
+      "file": "start_p10_s10.txt",
+      "sha256": "c6a15d4480a762731572e92e7040a18a7ed7691a199b1edd0f7c81455e8f3030"
+    }
+  ]
+}

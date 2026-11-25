@@ -2,28 +2,34 @@
 
 Repozytorium przygotowuje porównanie trzech implementacji heurystyki Vertex Substitution dla ważonego problemu p-median: sekwencyjnej na CPU, wielowątkowej z OpenMP oraz hybrydowej CPU+GPU z CUDA. C++17 obsługuje obliczenia mierzone, a Python generowanie instancji, uruchamianie eksperymentów i analizę wyników.
 
-Repozytorium zawiera generator danych i wspólny parser C++17 budowany przez CMake. Implementacja algorytmu i skrypty pomiarowe będą dodawane w kolejnych iteracjach.
+Repozytorium zawiera generator danych, wspólny parser C++17 oraz dwa etapy wersji sekwencyjnej.
 
 ## Generowanie pierwszych danych
 
 W terminalu otwartym w katalogu projektu uruchom:
 
 ```powershell
-py data/gen.py --n 1000 --m 100 --p 5 10 20 --distribution uniform --seed 1 --out data/generated/uniform_demo
-py data/gen.py --n 1000 --m 100 --p 5 10 20 --distribution clustered --seed 1 --out data/generated/clustered_demo
+python data/gen.py --n 1000 --m 100 --p 5 10 20 --distribution uniform --seed 1 --out data/generated/uniform_demo
+python data/gen.py --n 1000 --m 100 --p 5 10 20 --distribution clustered --seed 1 --out data/generated/clustered_demo
 ```
 
 Każde uruchomienie zapisuje instancję, po 10 rozwiązań startowych dla każdego p oraz manifest parametrów i sum kontrolnych. Wybierz nowy katalog `--out`, jeśli wskazany już istnieje. Generator nie wymaga dodatkowych bibliotek. Szczegóły i format wejścia opisano w [instrukcji generatora](data/README.md).
 
-## Budowanie i sprawdzanie parsera
+## Budowanie i uruchamianie wersji sekwencyjnej
 
 Uruchom polecenia z głównego katalogu projektu. W Windows użyj **x64 Native Tools Command Prompt for Visual Studio** z CMake i Ninja w `PATH`. Testy tworzą własne dane w katalogu kompilacji.
 
 ```text
-cmake -S . -B build/parser -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build/parser
-ctest --test-dir build/parser --output-on-failure
+cmake -S . -B build/ninja-seq -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build/ninja-seq
+ctest --test-dir build/ninja-seq --output-on-failure
+build/ninja-seq/pm_s0.exe data/generated/uniform_demo/instance.txt data/generated/uniform_demo/start_p5_s1.txt results/raw/demo_s0.csv
+build/ninja-seq/pm_s1.exe data/generated/uniform_demo/instance.txt data/generated/uniform_demo/start_p5_s1.txt results/raw/demo_s1.csv
 ```
+
+Program przyjmuje instancję, rozwiązanie startowe i nazwę nowego pliku CSV. Obok CSV zapisuje końcowy zestaw stacji i metadane.
+
+S0 przelicza pełny koszt każdej próbnej zamiany. S1 zapamiętuje dla każdego punktu dwie najmniejsze odległości do wybranych stacji. W każdej iteracji liczy odległości do dodawanego kandydata raz i wykorzystuje je we wszystkich próbach z tym kandydatem. Oba programy oceniają wszystkie zamiany, wybierają najlepszą i kończą, gdy poprawa nie przekracza ustalonego progu. [Dokumentacja S0 i S1](docs/S0-S1.md) zawiera historię zmian, profilowanie i instrukcję odtworzenia pomiarów.
 
 Wspólny moduł `pmedian_common` udostępnia `read_instance` i `read_start` przez [input.hpp](src/common/input.hpp). Parser sprawdza układ wierszy i wartości, a przy błędzie zgłasza wyjątek z nazwą pliku i numerem wiersza, jeśli udało się rozpocząć odczyt.
 

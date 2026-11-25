@@ -1,0 +1,6 @@
+stage,phase,calls,seconds
+s0,trial_cost,9000,0.53738600000000003
+s0,initial_cost,1,5.6700000000000003e-05
+s1,trial_cost,9000,0.017207099999999999
+s1,candidate_distances,900,0.0053877999999999999
+s1,refresh_nearest,10,0.001011

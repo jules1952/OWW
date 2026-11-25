@@ -1,0 +1,5 @@
+stage,phase,calls,seconds
+s0,trial_cost,9000,0.54616529999999996
+s0,initial_cost,1,5.6799999999999998e-05
+s1,trial_cost,9000,0.069743799999999995
+s1,refresh_nearest,10,0.0010353000000000001
