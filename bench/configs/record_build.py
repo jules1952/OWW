@@ -1,39 +1,86 @@
-"""Zapisuje powiązanie plików źródłowych z właśnie zbudowanymi programami."""
+"""Zapisuje informacje zgłaszane przez binaria i stan katalogu źródłowego."""
 import argparse
-from datetime import datetime, timezone
 import hashlib
 import json
-import os
 from pathlib import Path
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
+SOURCES = (
+    "CMakeLists.txt",
+    "bench/configs/record_build.py",
+    "bench/run_seq_profile.py",
+    "data/gen.py",
+    "src/common/input.cpp",
+    "src/common/input.hpp",
+    "src/seq/build_info.hpp",
+    "src/seq/phase_profile.hpp",
+    "src/seq/s0.cpp",
+    "src/seq/s0.hpp",
+    "src/seq/s0_main.cpp",
+    "src/seq/s1.cpp",
+    "src/seq/s1.hpp",
+    "src/seq/s1_main.cpp",
+)
 
 
-def digest(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def file_record(path):
+    path = path.resolve(strict=True)
+    saved_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
+    return {
+        "path": saved_path.as_posix(),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+    }
+
+
+def git(*args):
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+
+
+def build_manifest(release, profile):
+    builds = {}
+    # Metadane odczytujemy z konkretnych binariów, także dla generatorów wielokonfiguracyjnych.
+    for name, executables, profiling in (("release", release, False), ("profile", profile, True)):
+        builds[name] = {}
+        for stage, executable in executables.items():
+            executable = executable.resolve(strict=True)
+            output = subprocess.check_output([str(executable), "--build-info"], text=True)
+            info = dict(line.split("=", 1) for line in output.splitlines())
+            if info["profile"] != str(int(profiling)):
+                raise ValueError(f"Nieprawidłowe ustawienie profilowania w {executable}")
+            builds[name][stage] = {
+                **file_record(executable),
+                "compiler": info["compiler"],
+                "configuration": info["configuration"],
+                "profiling": profiling,
+            }
+    # Stan źródeł opisuje katalog w chwili pomiaru. Hash binarium identyfikuje użyty program.
+    return {
+        "checkout": {
+            "commit": git("rev-parse", "HEAD"),
+            "dirty": bool(git("status", "--porcelain")),
+            "source_sha256": {name: file_record(ROOT / name)["sha256"] for name in SOURCES},
+        },
+        "executables": builds,
+    }
+
+
+def write_manifest(path, data):
+    with path.open("x", encoding="utf-8") as output:
+        json.dump(data, output, ensure_ascii=False, indent=2)
+        output.write("\n")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stages', nargs='+', choices=['S0','S1','PROFILE'], required=True)
+    for name in ("release-s0", "release-s1", "profile-s0", "profile-s1", "out"):
+        parser.add_argument(f"--{name}", type=Path, required=True)
     args = parser.parse_args()
-    path = ROOT/'build/seq_build_manifest.json'
-    data = json.loads(path.read_text()) if path.exists() else {}
-    common = ['src/common/input.cpp','src/common/input.hpp','src/seq/s0.hpp']
-    sources = {
-        'S0': common+['src/seq/s0.cpp','src/seq/s0_main.cpp'],
-        'S1': common+['src/seq/s0.cpp','src/seq/s1.cpp','src/seq/s1.hpp','src/seq/s1_main.cpp'],
-        'PROFILE': common+['src/seq/s0.cpp','profiles/generated/s0_profiled.cpp','profiles/s0_profile.hpp','src/seq/s0_main.cpp']}
-    for stage in args.stages:
-        name = {'S0':'pm_s0','S1':'pm_s1','PROFILE':'pm_s0_profile'}[stage]
-        exe = ROOT/'build'/(name+('.exe' if os.name=='nt' else ''))
-        data[stage] = {'built_at_utc':datetime.now(timezone.utc).isoformat(),
-                       'executable':str(exe.relative_to(ROOT)), 'executable_sha256':digest(exe),
-                       'source_sha256':{s:digest(ROOT/s) for s in sources[stage]},
-                       'build_info':(ROOT/'build/seq_build_info.txt').read_text(encoding='utf-8',errors='replace')}
-    path.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8')
-    print('Zapisano build/seq_build_manifest.json: '+', '.join(args.stages))
+    write_manifest(args.out, build_manifest(
+        {"s0": args.release_s0, "s1": args.release_s1},
+        {"s0": args.profile_s0, "s1": args.profile_s1},
+    ))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

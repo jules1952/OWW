@@ -29,6 +29,8 @@ build/ninja-seq/pm_s1.exe data/generated/uniform_demo/instance.txt data/generate
 
 Program przyjmuje instancję, rozwiązanie startowe i nazwę nowego pliku CSV. Obok CSV zapisuje końcowy zestaw stacji i metadane.
 
+Przy bezpośrednim uruchomieniu `t_prep` mierzy odczyt instancji i startu, a `t_search` obejmuje wywołanie solvera. Do pomiaru `t_total`, czyli pełnego uruchomienia procesu, użyj `bench/run_seq_profile.py`. Skrypt zapisuje pięć pomiarów dla każdego solvera, przebiegi rozgrzewkowe, profil faz oraz manifest kompilacji i danych. [Polecenia i przykład wyników](docs/iterations/02-seq-end-to-end.md).
+
 S0 przelicza pełny koszt każdej próbnej zamiany. S1 zapamiętuje dla każdego punktu dwie najmniejsze odległości do wybranych stacji. W każdej iteracji liczy odległości do dodawanego kandydata raz i wykorzystuje je we wszystkich próbach z tym kandydatem. Oba programy oceniają wszystkie zamiany, wybierają najlepszą i kończą, gdy poprawa nie przekracza ustalonego progu. [Dokumentacja S0 i S1](docs/iterations/S0-S1.md) zawiera historię zmian, profilowanie i instrukcję odtworzenia pomiarów.
 
 Wspólny moduł `pmedian_common` udostępnia `read_instance` i `read_start` przez [input.hpp](src/common/input.hpp). Parser sprawdza układ wierszy i wartości, a przy błędzie zgłasza wyjątek z nazwą pliku i numerem wiersza, jeśli udało się rozpocząć odczyt.

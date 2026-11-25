@@ -1,0 +1,78 @@
+{
+  "checkout": {
+    "commit": "bdf0bdfeca16992ee6e0b520ee3616ce77932b36",
+    "dirty": true,
+    "source_sha256": {
+      "CMakeLists.txt": "f423adb7c98bfc3e58ebff5eaf6451773f48b0e6b9a2c2e362aca6b0a4170cfa",
+      "bench/configs/record_build.py": "b88de0dfe052cc863c80e9f1c4222c9a39f6407dd92d0b1b1569b8ddb104d245",
+      "bench/run_seq_profile.py": "58b7fef70f04225b96e049514c257fac32f6d1892d47eb062b319531f00c6ee0",
+      "data/gen.py": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "src/common/input.cpp": "8f0e4136f98a306312acbeb6e57358a3c2a68e9cc2540096ccbe9b7848502f8e",
+      "src/common/input.hpp": "faf21c848eb7a85acf915c87336713d0731c9ce82b3150d0daede5d7c721b1ed",
+      "src/seq/build_info.hpp": "a950d8ce0cf5067c2a58dbb2528abfd9582b2af749bbe99b86b5d3b3eb61ccda",
+      "src/seq/phase_profile.hpp": "4126367aa28b178945dc5e11e7bbcd18f375d8fcc8e9123b82204112c34d1c2e",
+      "src/seq/s0.cpp": "2ef3289d62c858f381580762c695eb101174f70e03e920c0ff5a2046da3a3562",
+      "src/seq/s0.hpp": "fca51b0aa692535eb9cdb9dc38779229610b4b7d5c506a39e75d3d9736d33c2c",
+      "src/seq/s0_main.cpp": "413b11ca2a50eca33fa561e857bf427afbc5d5acf8ad225dced17fee3f09d5f3",
+      "src/seq/s1.cpp": "8b8e2dbf6065b0d72fa51ca9a71df5daa7e82e9e2965457b1cd8b64af8375c1c",
+      "src/seq/s1.hpp": "4ec1379bb01f3a1d220640e5cb978ea781bcd310ccc7df07667c2f98e2972df3",
+      "src/seq/s1_main.cpp": "e76297eb03cf10848bd51e448ef8144f2d76f827f376fecc36112b11810f24e7"
+    }
+  },
+  "executables": {
+    "release": {
+      "s0": {
+        "path": "build/seq-end-to-end-release/pm_s0.exe",
+        "sha256": "2de5a38fac68488e8645efb3fec197e6306028a36ddb6f5c34880e944c338c25",
+        "compiler": "MSVC 19.52.37029.0",
+        "configuration": "Release",
+        "profiling": false
+      },
+      "s1": {
+        "path": "build/seq-end-to-end-release/pm_s1.exe",
+        "sha256": "0670a29cd018b02ff7e7656721237f5a56f4859f71831f75c9e330d465b45dc0",
+        "compiler": "MSVC 19.52.37029.0",
+        "configuration": "Release",
+        "profiling": false
+      }
+    },
+    "profile": {
+      "s0": {
+        "path": "build/seq-end-to-end-profile/pm_s0.exe",
+        "sha256": "5986a17b90d82d3053fc816f6141e0ff3ec1cbf9400c4ccf324b71ba9df8488d",
+        "compiler": "MSVC 19.52.37029.0",
+        "configuration": "Release",
+        "profiling": true
+      },
+      "s1": {
+        "path": "build/seq-end-to-end-profile/pm_s1.exe",
+        "sha256": "8ed836554fb150add057baa7f0dfd00f54521c0b185ec14924d56e45bd9a97a6",
+        "compiler": "MSVC 19.52.37029.0",
+        "configuration": "Release",
+        "profiling": true
+      }
+    }
+  },
+  "instance": {
+    "path": "data/generated/seq_end_to_end/instance.txt",
+    "sha256": "beac8cb3fc6cd53611656f2425291853045b55f11f405eb485289ecc53a42f31"
+  },
+  "start": {
+    "path": "data/generated/seq_end_to_end/start_p10_s1.txt",
+    "sha256": "b4adbc1d93bb2144e5802b55dd4970e974d1e357b1fed99367fca94b5265371b"
+  },
+  "warmups_per_stage": 1,
+  "measured_repetitions_per_stage": 5,
+  "profile_runs_per_stage": 1,
+  "timing": {
+    "t_prep": "C++ instance and start file parsing",
+    "t_search": "C++ solver call",
+    "t_total": "Python wall clock around the C++ process including file and console I/O"
+  },
+  "host": {
+    "system": "Windows-10-10.0.19045-SP0",
+    "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+    "logical_cpus": 16,
+    "python": "3.12.14"
+  }
+}

@@ -1,5 +1,6 @@
 #include "s0.hpp"
 #include "s1.hpp"
+#include "build_info.hpp"
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -11,6 +12,7 @@
 
 int main(int argc, char** argv) {
     try {
+        if (pmedian::print_build_info_if_requested(argc, argv)) return 0;
         if (argc != 4)
             throw std::runtime_error("Uzycie: pm_s1 INSTANCJA START WYNIK.csv");
         const std::filesystem::path output = argv[3];
@@ -20,9 +22,11 @@ int main(int argc, char** argv) {
             std::filesystem::exists(stations_path) || std::filesystem::exists(meta_path))
             throw std::runtime_error("Wynik juz istnieje; wybierz nowa nazwe CSV.");
 
+        const auto read_begin = std::chrono::steady_clock::now();
         const auto instance = pmedian::read_instance(argv[1]);
         const auto start = pmedian::read_start(argv[2], instance);
         const auto begin = std::chrono::steady_clock::now();
+        const double prep = std::chrono::duration<double>(begin - read_begin).count();
         const auto result = pmedian::solve_s1(instance, start);
         const double elapsed = std::chrono::duration<double>(
             std::chrono::steady_clock::now() - begin).count();
@@ -38,16 +42,18 @@ int main(int argc, char** argv) {
             << "seq," << std::quoted(std::filesystem::path(argv[1]).generic_string(), '"', '"')
             << ",euclidean," << instance.demand.size() << ','
             << instance.candidates.size() << ',' << start.size()
-            << ",1,1,0,0," << elapsed << ",0," << elapsed << ','
+            << ",1,1," << prep << ",0," << elapsed << ",0,,"
             << result.iterations << ',' << result.cost << ",,,"
             << pmedian::station_set_hash(result.stations) << '\n';
         stations << result.stations.size() << '\n';
-        for (auto station : result.stations) stations << station << ' ';
+        stations << result.stations.front();
+        for (std::size_t i = 1; i < result.stations.size(); ++i)
+            stations << ' ' << result.stations[i];
         stations << '\n';
         meta << "stage=S1-nearest2-candidate-cache\ninstance=" << argv[1] << "\nstart=" << argv[2]
-             << "\nepsilon=1e-9\nprecision=double\nwarmups=0\n"
+             << "\nepsilon=1e-9\nprecision=double\nwarmups_in_process=0\n"
              << "hash=FNV1a64_u64_little_endian\n"
-             << "timing=full_solve_s1_excludes_file_IO\n";
+             << "t_prep=read_instance_and_start\nt_search=full_solve_s1\n";
         csv.close(); stations.close(); meta.close();
         if (!csv || !stations || !meta)
             throw std::runtime_error("Blad zapisu; pliki moga byc niepelne.");
