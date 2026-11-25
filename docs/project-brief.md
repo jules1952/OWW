@@ -18,14 +18,16 @@ Ruch wykonujemy tylko przy `delta < -1e-9 * bieżący_koszt`. Jeśli żadna zami
 | S1 | Sekwencyjna ocena zamian z użyciem zapamiętanych odległości. Punkt odniesienia dla wydajności. |
 | P1 | Równoległa ocena zamian z OpenMP. |
 | S2 | Opcjonalna dalsza optymalizacja CPU oparta na układzie danych i wektoryzacji. |
-| G1 | Planowany wariant CUDA. CPU prowadzi iteracje, a każdy wątek GPU ocenia jedną zamianę. |
+| G1 | CPU prowadzi iteracje, a każdy wątek GPU ocenia jedną zamianę. |
 | G2 | Planowana ocena jednej zamiany przez blok GPU, z podziałem punktów między wątki. |
 | G3 | Planowane ograniczenie transferów przez pozostawienie danych i aktualizacji stanu na GPU. |
 
 Dla każdej porównywanej pary używamy tych samych współrzędnych, wag i stacji początkowych. Koszt i delty liczymy w `double`. Wymagamy tego samego końcowego zestawu stacji co w S0 oraz względnej różnicy kosztu do `1e-6`. Sumę kontrolną zestawu (`final_set_hash`) liczymy po posortowaniu indeksów.
 
+G1 liczy odległości na CPU za pomocą tego samego `std::hypot` co S1 i przekazuje macierz odległości do GPU. Koszt pojedynczej zamiany sumuje jeden wątek, w kolejności punktów z pliku, z osobnym zaokrągleniem mnożenia i dodawania. Wybór ruchu i próg poprawy pozostają wspólne z wariantami CPU.
+
 Pomiar obejmuje osobno przygotowanie danych, wyszukiwanie i pełne uruchomienie programu. Dla CUDA dochodzą czasy transferu w obu kierunkach. Zużycie pamięci i liczbę przesłanych bajtów raportujemy, gdy są dostępne. [Plan badań](experiments.md)
 
 ## Stan prac
 
-Działają generator, wspólny parser oraz S0, S1 i P1. Instancje mają format tekstowy v1 i są odtwarzalne z parametrów i ziaren losowania. Wariant CUDA i jego pomiary pozostają do wykonania. RTX 3070 jest dostępna na komputerze użytym do prac, a kompilację i wykonanie kodu CUDA trzeba jeszcze sprawdzić. Zakres ewentualnej pracy wielowęzłowej, w tym użycie MPI, wymaga ustalenia. [Format danych](../data/README.md) · [Środowisko](environment-windows.md)
+Działają generator, wspólny parser oraz S0, S1, P1 i G1. Instancje mają format tekstowy v1 i są odtwarzalne z parametrów i ziaren losowania. G1 sprawdzono na RTX 3070. Ustalenie progu opłacalności GPU wymaga pomiarów dla różnych rozmiarów instancji. Zakres ewentualnej pracy wielowęzłowej, w tym użycie MPI, wymaga ustalenia. [Format danych](../data/README.md) · [Środowisko](environment-windows.md)

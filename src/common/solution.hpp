@@ -1,11 +1,21 @@
 #pragma once
 
 #include "input.hpp"
+#include <optional>
 #include <string>
 
 namespace pmedian {
 
 inline constexpr double epsilon = 1e-9;
+
+struct CudaMetrics {
+    double prep_seconds = 0.0;
+    double h2d_seconds = 0.0;
+    double d2h_seconds = 0.0;
+    std::size_t device_bytes = 0;
+    std::size_t h2d_bytes = 0;
+    std::size_t d2h_bytes = 0;
+};
 
 struct SolverResult {
     StationSet stations;
@@ -13,6 +23,7 @@ struct SolverResult {
     double cost = 0.0;
     std::size_t iterations = 0;
     int threads = 1;
+    std::optional<CudaMetrics> cuda;
 };
 
 // Przegląd zaczyna się od delty 0. Zapamiętujemy tylko ruchy obniżające koszt.

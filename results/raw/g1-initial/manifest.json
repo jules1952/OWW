@@ -1,0 +1,448 @@
+{
+  "checkout": {
+    "commit": "abd4f589b554f833feddb753dda28c1a27703794",
+    "dirty": true,
+    "source_sha256": {
+      "CMakeLists.txt": "ffd4bb7dfe00544003dc7857e47c9a3c51a18d2add94c7a33ed683830ed70fb5",
+      "bench/configs/p1-e1-e3.json": "c323c7f9e2d0d8297c95b130e9cf1446ff45501a95505f8153b472930e899d26",
+      "bench/configs/record_build.py": "04b220e812ccc522248b3a703d66f56d016f83b019849d0293bede33537fd5d9",
+      "bench/configs/seq-profile-instance.json": "6646f6de86ce5ba917f66f78cd6381f782b74e4cf0914db9928d41e1952fe32e",
+      "bench/run_omp_scaling.py": "8077cefb1d23621df8f8e0ebefe5c090cdddb72f183c58f6a1307581a3e1f660",
+      "bench/run_seq_profile.py": "5fa17971718cf126e2889e82d3972b53cee611ecd53bc35fe3596fb67772ea8d",
+      "src/common/input.cpp": "3313796a69bed6e5447ce976f2aeebe64c1d1564388028793cbc7279453899a2",
+      "src/common/input.hpp": "faf21c848eb7a85acf915c87336713d0731c9ce82b3150d0daede5d7c721b1ed",
+      "src/common/nearest_search.cpp": "0ddf500ef2f8610c518766f3153c13f90eb574fc93b7906fb6b2b16463c31b6a",
+      "src/common/nearest_search.hpp": "d017bba1b49de978430d1ad189dfdd60de0b23e164701d71728358229f594fd9",
+      "src/common/solution.cpp": "6247d89596fbc63ef4f59873d2bf6c32943689f7fedecf07fa283525a5470c91",
+      "src/common/solution.hpp": "ac6efbf0ad48b9d55d1314a7cace10feb45c567d1cd4cd806975b76668c0103f",
+      "src/common/solver_cli.cpp": "95abc4ed7b81de28de6110cc340051f79bbb6f1b8c64d3e4a6acb7e80f5c471a",
+      "src/common/solver_cli.hpp": "cb960831f0180ff191cb0ba5662564b17c35af04d7976e818172792f3d8f3280",
+      "src/omp/p1.cpp": "b3bbab991da7b87847d3699a9be58f09852295d28d5b2b12d25a6e8607f55d15",
+      "src/omp/p1.hpp": "b62b9b552721af206ee8d3d0426a35d2dd91b050e6e1a08f82b402eaa0f6c0ed",
+      "src/omp/p1_main.cpp": "f73e515ece45323c40cdae7b704a4da8a782c2e64432b4ab73df0b74a540d2e4",
+      "src/seq/build_info.hpp": "def65246cbf62151b3d758f698ca0d3d86ad01b2ae5fb9f39a69c6710b2590e1",
+      "src/seq/phase_profile.hpp": "4126367aa28b178945dc5e11e7bbcd18f375d8fcc8e9123b82204112c34d1c2e",
+      "src/seq/s0.cpp": "a66ff452b15ba7c205ad07a60fe69eaee70c1d37e8f2010cdf7f14ce7532893c",
+      "src/seq/s0.hpp": "140c588f916912c05cfb43b623a44bb75ac5898ba59c9cf08178164a9230f601",
+      "src/seq/s0_main.cpp": "abbfe799b747e687cef308880c3c5f55cbceb7a1015414111213b06034c5c9be",
+      "src/seq/s1.cpp": "50fd05c9b6788dcb0daa011c51874eb7311fa21d1869cca9b833f8cf6c7bbb61",
+      "src/seq/s1.hpp": "fb06702b19335a0874e79a9e009a68689af343af5eca75c4de3c556b4ee92fd8",
+      "src/seq/s1_main.cpp": "2307cefe1e57d9f859c569699bff8ad4583cb778f497e952d7e40c37281f0458",
+      "tests/input_tests.cpp": "72c4fa9e1059fe620e10a454503b18f028c108110bf71922d52e539d9a2d570c",
+      "tests/seq_tests.cpp": "c0c5d3542eff878987f97befafb8b9192a98fd164becbbf6ee1af85b98bf359b",
+      "src/cuda/g1.cu": "36f7fe684acf60aa122367d573c80e42edd8fff927127eadc5a66c6b006ddffc",
+      "src/cuda/g1.hpp": "155bbeb3dbad8eb51a3728caf7dc4e9c8694f0f7b19252ad46a00e4697f35762",
+      "src/cuda/g1_main.cpp": "55fe75d6d02f8c54db76ff6d35f3b032e08876a47d816a4077f64df0e0f605f1"
+    }
+  },
+  "executables": {
+    "s0": {
+      "path": "build/g1-release/pm_s0.exe",
+      "sha256": "ab498ebf50836f082685767a1da3777a3af16853d9c74ba1c012ac387ce9a3b7",
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "profile": "0"
+    },
+    "s1": {
+      "path": "build/g1-release/pm_s1.exe",
+      "sha256": "baec2363d9070583b9248370ba8c9968e434632ef79891252c8def8c8d7d6863",
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "profile": "0"
+    },
+    "p1": {
+      "path": "build/g1-release/pm_p1.exe",
+      "sha256": "90bedc4ea5060c7e9b0e91ce2ebdba7ee02e736ca347e5ace6b72345ca4eb27a",
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "profile": "0",
+      "openmp": "2.0"
+    },
+    "g1": {
+      "path": "build/g1-release/pm_g1.exe",
+      "sha256": "b462aa58c87ee13d8bb8b9e0b629fe18d8806a6f410aaf73bf5c462ed19dac8d",
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "profile": "0",
+      "cuda": "NVIDIA 13.5.37",
+      "cuda_architectures": "86"
+    }
+  },
+  "config": {
+    "path": "bench/configs/p1-e1-e3.json",
+    "sha256": "c323c7f9e2d0d8297c95b130e9cf1446ff45501a95505f8153b472930e899d26"
+  },
+  "parameters": {
+    "threads": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "repetitions": 5,
+    "scaling": {
+      "directory": "data/generated/p1_e3",
+      "start": "start_p15_s1.txt"
+    },
+    "validation": [
+      "data/generated/p1_e1_clustered",
+      "data/generated/p1_e1_uniform"
+    ]
+  },
+  "datasets": {
+    "data/generated/p1_e3": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 3000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "780d9fc2b46352ec927bac7bd17b7973f256b3d9c0436ea2a64cc3dbb9bc1eee"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        },
+        {
+          "p": 15,
+          "seed": 2,
+          "file": "start_p15_s2.txt",
+          "sha256": "593c03727ef02311854f03ff8434f44d9a72b23acf48b9a841585ef81c720115"
+        },
+        {
+          "p": 15,
+          "seed": 3,
+          "file": "start_p15_s3.txt",
+          "sha256": "80ef3155547bcf5cba3f423e7f0337a3201a0cd373a6b7ac66eef7275df482e0"
+        },
+        {
+          "p": 15,
+          "seed": 4,
+          "file": "start_p15_s4.txt",
+          "sha256": "ca5964c47a4fd85b7b173963ed543cbb1fffe440e61e46f5ee44ee4d4a400e2e"
+        },
+        {
+          "p": 15,
+          "seed": 5,
+          "file": "start_p15_s5.txt",
+          "sha256": "8739605c53f7565f29f8a4915e911505a0e3dc0350ca8c7ddf8fd4a626db5ddb"
+        },
+        {
+          "p": 15,
+          "seed": 6,
+          "file": "start_p15_s6.txt",
+          "sha256": "9c7a458708845a9425054f07ff4d6da8f9529e3284af12e94b3d381b61ef6855"
+        },
+        {
+          "p": 15,
+          "seed": 7,
+          "file": "start_p15_s7.txt",
+          "sha256": "0bf3452161a763a5556d4e4a9da69804aeb2083f25f3b4bd6c70f158017b946e"
+        },
+        {
+          "p": 15,
+          "seed": 8,
+          "file": "start_p15_s8.txt",
+          "sha256": "228e70ebbcacb7daac2c3e6e5344dd29d5cda2da1fdc4ad5c02d37095be0e607"
+        },
+        {
+          "p": 15,
+          "seed": 9,
+          "file": "start_p15_s9.txt",
+          "sha256": "9876e2df356e926f05bddbd3d207808d2edeea236118450e6b0efd510de477db"
+        },
+        {
+          "p": 15,
+          "seed": 10,
+          "file": "start_p15_s10.txt",
+          "sha256": "27fc2fc21ff41ffaa132eec3d0d930512dee9b65ff7511195408812597ac8ba1"
+        }
+      ]
+    },
+    "data/generated/p1_e1_uniform": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 200,
+        "m": 30,
+        "p": [
+          5
+        ],
+        "distribution": "uniform",
+        "weights": "unit",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "bb426bba57436b42595c7a00faea0172813af8498d0765c92738fecad2d03a44"
+      },
+      "starts": [
+        {
+          "p": 5,
+          "seed": 1,
+          "file": "start_p5_s1.txt",
+          "sha256": "6c1fea4518a6f2f4265c6fabd9fc460bce081cba1f3a1ec2c49f282e36eadac6"
+        },
+        {
+          "p": 5,
+          "seed": 2,
+          "file": "start_p5_s2.txt",
+          "sha256": "045b6a7b8b5bd0c3f174a857026d1d879c2e7e9a6ad9baed7fad7b13b0c69d45"
+        },
+        {
+          "p": 5,
+          "seed": 3,
+          "file": "start_p5_s3.txt",
+          "sha256": "e0dea378102bb72dc8a61f87b5ae1591c67ade3363a4bc059c7c8665a49c961f"
+        },
+        {
+          "p": 5,
+          "seed": 4,
+          "file": "start_p5_s4.txt",
+          "sha256": "781359f0675781d6111219d396a338745293ab9fbb5660ec5b14ba495305d157"
+        },
+        {
+          "p": 5,
+          "seed": 5,
+          "file": "start_p5_s5.txt",
+          "sha256": "e71f56830ce34df771377ac6d9bf9d90a0527f4508e4fa0e3f01de9bfa12718a"
+        },
+        {
+          "p": 5,
+          "seed": 6,
+          "file": "start_p5_s6.txt",
+          "sha256": "dfca4d7630e7c1b0dee2d5295fb29d81b1ec53d5ec7c543293ba9ec431ae4134"
+        },
+        {
+          "p": 5,
+          "seed": 7,
+          "file": "start_p5_s7.txt",
+          "sha256": "f2d414ffa6d2b9a4f1c38b3b8df5bc79051eceb9f99f4b7f99f0337928e202a2"
+        },
+        {
+          "p": 5,
+          "seed": 8,
+          "file": "start_p5_s8.txt",
+          "sha256": "fecc6c1143a318239713425b41e7cf25097693d8e36e729411d3afb159f99ab0"
+        },
+        {
+          "p": 5,
+          "seed": 9,
+          "file": "start_p5_s9.txt",
+          "sha256": "4d098615f1617b140b1a9e4f6895adc5d111a766977c026883234a47b1f076b2"
+        },
+        {
+          "p": 5,
+          "seed": 10,
+          "file": "start_p5_s10.txt",
+          "sha256": "75836ac3307ff7b3b91a60e8f2dbdbb91607c3acd62f5333b311265fbb00cb89"
+        }
+      ]
+    },
+    "data/generated/p1_e1_clustered": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 200,
+        "m": 30,
+        "p": [
+          5
+        ],
+        "distribution": "clustered",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 2,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [
+        [
+          4345.699066653769,
+          7157.517616575082
+        ],
+        [
+          7618.668747750259,
+          9500.617634115648
+        ],
+        [
+          9260.556091674596,
+          8920.17472579654
+        ],
+        [
+          3567.67851352472,
+          436.0526279098076
+        ],
+        [
+          8848.00702585243,
+          9238.000081192258
+        ]
+      ],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "792813ace274213a1f2b18310599b85f5825c4aaf6f9abadc7a6fde1c2645f36"
+      },
+      "starts": [
+        {
+          "p": 5,
+          "seed": 1,
+          "file": "start_p5_s1.txt",
+          "sha256": "6c1fea4518a6f2f4265c6fabd9fc460bce081cba1f3a1ec2c49f282e36eadac6"
+        },
+        {
+          "p": 5,
+          "seed": 2,
+          "file": "start_p5_s2.txt",
+          "sha256": "045b6a7b8b5bd0c3f174a857026d1d879c2e7e9a6ad9baed7fad7b13b0c69d45"
+        },
+        {
+          "p": 5,
+          "seed": 3,
+          "file": "start_p5_s3.txt",
+          "sha256": "e0dea378102bb72dc8a61f87b5ae1591c67ade3363a4bc059c7c8665a49c961f"
+        },
+        {
+          "p": 5,
+          "seed": 4,
+          "file": "start_p5_s4.txt",
+          "sha256": "781359f0675781d6111219d396a338745293ab9fbb5660ec5b14ba495305d157"
+        },
+        {
+          "p": 5,
+          "seed": 5,
+          "file": "start_p5_s5.txt",
+          "sha256": "e71f56830ce34df771377ac6d9bf9d90a0527f4508e4fa0e3f01de9bfa12718a"
+        },
+        {
+          "p": 5,
+          "seed": 6,
+          "file": "start_p5_s6.txt",
+          "sha256": "dfca4d7630e7c1b0dee2d5295fb29d81b1ec53d5ec7c543293ba9ec431ae4134"
+        },
+        {
+          "p": 5,
+          "seed": 7,
+          "file": "start_p5_s7.txt",
+          "sha256": "f2d414ffa6d2b9a4f1c38b3b8df5bc79051eceb9f99f4b7f99f0337928e202a2"
+        },
+        {
+          "p": 5,
+          "seed": 8,
+          "file": "start_p5_s8.txt",
+          "sha256": "fecc6c1143a318239713425b41e7cf25097693d8e36e729411d3afb159f99ab0"
+        },
+        {
+          "p": 5,
+          "seed": 9,
+          "file": "start_p5_s9.txt",
+          "sha256": "4d098615f1617b140b1a9e4f6895adc5d111a766977c026883234a47b1f076b2"
+        },
+        {
+          "p": 5,
+          "seed": 10,
+          "file": "start_p5_s10.txt",
+          "sha256": "75836ac3307ff7b3b91a60e8f2dbdbb91607c3acd62f5333b311265fbb00cb89"
+        }
+      ]
+    }
+  },
+  "host": {
+    "system": "Microsoft Windows NT 10.0.19045.0",
+    "processor": "12th Gen Intel(R) Core(TM) i5-12600KF",
+    "logical_cpus": 16,
+    "powershell": "7.6.9"
+  },
+  "gpu": [
+    "NVIDIA GeForce RTX 3070, 621.01, 8192 MiB"
+  ],
+  "openmp_environment": {
+    "OMP_DYNAMIC": "FALSE"
+  },
+  "build": {
+    "cxx_release_flags": "/O2 /Ob2 /DNDEBUG",
+    "cuda_release_flags": "-Xcompiler=\"-O2 -Ob2\" -DNDEBUG",
+    "cuda_architectures": "86"
+  },
+  "timing": {
+    "t_prep": "C++ input parsing; G1 also includes solver setup",
+    "t_search": "C++ solver call; G1 excludes solver setup and H2D/D2H",
+    "t_h2d": "G1 blocking copies to the GPU",
+    "t_d2h": "G1 blocking copy after kernel completion",
+    "t_total": "PowerShell Stopwatch around the C++ process including file and redirected console I/O",
+    "gpu_mem_mb": "device buffers allocated by G1 in MiB"
+  },
+  "runner": "PowerShell fallback using the same config, warmup and rotation as the documented Python command"
+}

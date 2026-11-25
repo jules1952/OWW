@@ -2,6 +2,12 @@
 #include "../src/seq/s1.hpp"
 #ifdef PMEDIAN_TEST_OPENMP
 #include "../src/omp/p1.hpp"
+#endif
+#ifdef PMEDIAN_TEST_CUDA
+#include "g1.hpp"
+#include <string_view>
+#endif
+#if defined(PMEDIAN_TEST_OPENMP) || defined(PMEDIAN_TEST_CUDA)
 #include <stdexcept>
 #endif
 
@@ -43,6 +49,16 @@ bool check(const char* name, const Instance& instance, const StationSet& start,
         }
     }
 #endif
+#ifdef PMEDIAN_TEST_CUDA
+    const auto g1 = pmedian::solve_g1(instance, start, 1);
+    const bool has_swaps = start.size() < instance.candidates.size();
+    if (!matches(g1, cost, stations, iterations) || !g1.cuda ||
+        ((g1.cuda->device_bytes > 0) != has_swaps) ||
+        ((g1.cuda->h2d_bytes > 0) != has_swaps) || ((g1.cuda->d2h_bytes > 0) != has_swaps)) {
+        std::cerr << name << ": G1 returned an unexpected result or transfer counts\n";
+        ok = false;
+    }
+#endif
     return ok;
 }
 
@@ -56,6 +72,20 @@ bool check_worker_exception() {
         return true;
     }
     std::cerr << "P1 did not propagate distance overflow from an OpenMP worker\n";
+    return false;
+}
+#endif
+
+#ifdef PMEDIAN_TEST_CUDA
+bool check_cuda_overflow(const Instance& instance, std::string_view expected_message) {
+    try {
+        pmedian::solve_g1(instance, {0}, 1);
+    } catch (const std::runtime_error& error) {
+        if (error.what() == expected_message) return true;
+        std::cerr << "G1 returned an unexpected error: " << error.what() << '\n';
+        return false;
+    }
+    std::cerr << "G1 did not report overflow: " << expected_message << '\n';
     return false;
 }
 #endif
@@ -84,6 +114,17 @@ int main() {
                 {{{{0, 0}, 3}, {{3, 4}, 1}}, {{3, 4}, {0, 0}, {0, 4}}}, {0}, 5.0, {1}, 1);
 #ifdef PMEDIAN_TEST_OPENMP
     ok &= check_worker_exception();
+#endif
+#ifdef PMEDIAN_TEST_CUDA
+    Instance multiple_blocks{{{{0, 0}, 1}}, std::vector<pmedian::Point>(133, {5, 0})};
+    multiple_blocks.candidates.back() = {0, 0};
+    ok &= check("winning swap in partial final block", multiple_blocks, {0}, 0.0, {132}, 1);
+
+    const double limit = std::numeric_limits<double>::max();
+    ok &= check_cuda_overflow({{{{limit, 0}, 1}}, {{limit, 0}, {-limit, 0}}},
+                              "Odleglosc poza zakresem double.");
+    ok &= check_cuda_overflow({{{{0, 0}, 2}}, {{0, 0}, {limit, 0}}},
+                              "Koszt poza zakresem double.");
 #endif
     return ok ? 0 : 1;
 }

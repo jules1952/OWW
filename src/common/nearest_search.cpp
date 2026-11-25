@@ -57,9 +57,9 @@ void NearestSearch::refresh_nearest() {
     }
 }
 
-void NearestSearch::cache_candidate(std::size_t in, std::vector<double>& distances) const {
+void NearestSearch::cache_candidate(std::size_t in, double* distances) const {
     const auto& candidate = instance_.candidates[in];
-    for (std::size_t i = 0; i < distances.size(); ++i)
+    for (std::size_t i = 0; i < nearest_.size(); ++i)
         distances[i] = distance(instance_.demand[i].position, candidate);
 }
 
@@ -74,9 +74,13 @@ SwapMove NearestSearch::evaluate(std::size_t position, std::size_t in,
         // różnice zaokrągleń, które mogłyby zmienić wybór ruchu.
         cost += instance_.demand[i].weight * std::min(remaining, distances[i]);
     }
+    return move_from_cost(position, in, cost);
+}
+
+SwapMove NearestSearch::move_from_cost(std::size_t position, std::size_t in, double cost) const {
     if (!std::isfinite(cost))
         throw std::runtime_error("Koszt poza zakresem double.");
-    return {cost - result_.cost, cost, out, in, position};
+    return {cost - result_.cost, cost, result_.stations[position], in, position};
 }
 
 bool NearestSearch::apply(const SwapMove& best) {

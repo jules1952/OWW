@@ -49,7 +49,7 @@ SolverResult solve_p1(const Instance& instance, StationSet stations, int threads
                 const auto in = static_cast<std::size_t>(candidate);
                 if (error || search.is_selected(in)) continue;
                 try {
-                    search.cache_candidate(in, worker.distances);
+                    search.cache_candidate(in, worker.distances.data());
                     for (std::size_t position = 0; position < search.station_count(); ++position)
                         keep_best(best, search.evaluate(position, in, worker.distances));
                 } catch (...) {

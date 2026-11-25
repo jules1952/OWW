@@ -1,10 +1,11 @@
-"""Sprawdza P1 względem S0 i porównuje skalowanie OpenMP z S1."""
+"""Sprawdza P1 względem S0, porównuje skalowanie z S1 i opcjonalnie mierzy G1."""
 import argparse
 import json
 import os
 from pathlib import Path
 import platform
 import statistics
+import subprocess
 from tempfile import TemporaryDirectory
 
 from configs.record_build import checkout_record, executable_record, file_record, write_manifest
@@ -25,6 +26,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("build", "config", "out"):
         parser.add_argument(name, type=Path)
+    parser.add_argument("--include-cuda", action="store_true", help="Sprawdź i zmierz G1 razem z CPU.")
     args = parser.parse_args()
     with args.config.open(encoding="utf-8") as source:
         config = json.load(source)
@@ -36,7 +38,8 @@ def main():
         raise ValueError("repetitions musi być liczbą całkowitą co najmniej 2.")
 
     suffix = ".exe" if os.name == "nt" else ""
-    executables = {stage: args.build / f"pm_{stage}{suffix}" for stage in ("s0", "s1", "p1")}
+    stages = ("s0", "s1", "p1", "g1") if args.include_cuda else ("s0", "s1", "p1")
+    executables = {stage: args.build / f"pm_{stage}{suffix}" for stage in stages}
     binaries = {stage: executable_record(path) for stage, path in executables.items()}
     if any(info["configuration"] != "Release" or info["profiling"] for info in binaries.values()):
         raise ValueError("Użyj kompilacji Release z wyłączonym profilowaniem.")
@@ -48,9 +51,11 @@ def main():
     if scaling_start not in {entry["file"] for entry in datasets[scaling]["starts"]}:
         raise ValueError("Start do pomiaru skalowania musi występować w manifeście instancji.")
 
+    sources = ("src/omp/p1.cpp", "src/omp/p1.hpp", "src/omp/p1_main.cpp", "bench/run_omp_scaling.py")
+    if args.include_cuda:
+        sources += ("src/cuda/g1.cu", "src/cuda/g1.hpp", "src/cuda/g1_main.cpp")
     manifest = {
-        "checkout": checkout_record(("src/omp/p1.cpp", "src/omp/p1.hpp", "src/omp/p1_main.cpp",
-                                     "bench/run_omp_scaling.py")),
+        "checkout": checkout_record(sources),
         "executables": binaries,
         "config": file_record(args.config),
         "parameters": config,
@@ -62,10 +67,23 @@ def main():
         "timing": {"t_prep": "C++ instance and start file parsing", "t_search": "C++ solver call",
                    "t_total": "wall clock around the C++ process including file and console I/O"},
     }
+    if args.include_cuda:
+        manifest["gpu"] = subprocess.check_output(
+            ["nvidia-smi", "--query-gpu=name,driver_version,memory.total", "--format=csv,noheader"],
+            text=True).strip().splitlines()
+        manifest["cuda_timing"] = {
+            "t_prep": "input parsing and solver setup including distances and GPU allocations",
+            "t_h2d": "blocking copies of distances, weights and iteration state",
+            "t_search": "solver call excluding solver setup and H2D/D2H",
+            "t_d2h": "blocking copies of swap costs after kernel completion",
+            "gpu_mem_mb": "device buffers allocated by G1 in MiB",
+        }
     args.out.mkdir(parents=True)
     write_manifest(args.out / "manifest.json", manifest)
 
     variants = [("s1", 1), *(("p1", count) for count in counts)]
+    if args.include_cuda:
+        variants.append(("g1", 1))
     correctness = []
     warmups = []
     measured = []
@@ -83,6 +101,12 @@ def main():
                                            solver_args=thread_args, env=env)
             if int(row["threads"]) != count:
                 raise ValueError(f"{stage} użył {row['threads']} z {count} żądanych wątków dla {start}")
+            if args.include_cuda:
+                row.update(h2d_bytes="", d2h_bytes="")
+                if stage == "g1":
+                    meta = dict(line.split("=", 1) for line in
+                                output.with_suffix(".csv.meta.txt").read_text(encoding="utf-8").splitlines())
+                    row.update(h2d_bytes=meta["h2d_bytes"], d2h_bytes=meta["d2h_bytes"])
             return {"stage": stage, "start": start.as_posix(), **row}, (float(row["cost"]), signature)
 
         for folder in (scaling, *validation):
@@ -118,8 +142,10 @@ def main():
                      if row["stage"] == stage and int(row["threads"]) == count]
             q1, _, q3 = statistics.quantiles(times, method="inclusive")
             median = statistics.median(times)
+            # G1 przenosi obliczenie odległości do t_prep. Speedup GPU liczymy dla całego procesu.
+            speedup = "" if stage == "g1" and metric == "t_search" else f", speedup {baseline / median:.2f}x"
             print(f"{metric} {stage} {count:2}: {median * 1000:8.3f} ms, "
-                  f"IQR {(q3 - q1) * 1000:7.3f} ms, speedup {baseline / median:.2f}x")
+                  f"IQR {(q3 - q1) * 1000:7.3f} ms{speedup}")
 
 
 if __name__ == "__main__":

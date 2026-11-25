@@ -31,7 +31,7 @@ S1Result solve_s1(const Instance& instance, StationSet stations) {
 #ifdef PMEDIAN_PROFILE_SEQ
                 PhaseTimer timer(distance_profile);
 #endif
-                search.cache_candidate(in, distances);
+                search.cache_candidate(in, distances.data());
             }
             for (std::size_t position = 0; position < search.station_count(); ++position) {
                 SwapMove candidate;

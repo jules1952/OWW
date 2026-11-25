@@ -14,6 +14,10 @@ inline bool print_build_info_if_requested(int argc, char** argv) {
 #ifdef PMEDIAN_BUILD_OPENMP
     std::cout << "openmp=" << PMEDIAN_BUILD_OPENMP << '\n';
 #endif
+#ifdef PMEDIAN_BUILD_CUDA
+    std::cout << "cuda=" << PMEDIAN_BUILD_CUDA
+              << "\ncuda_architectures=" << PMEDIAN_BUILD_CUDA_ARCHITECTURES << '\n';
+#endif
     return true;
 }
 

@@ -2,6 +2,8 @@
 
 Seria P1 obejmuje sprawdzenie poprawności na 20 startach i pomiar skalowania na jednej instancji. Tabela pokazuje pełny plan badań. Ustawienia zapisujemy w `bench/configs/`, a surowe wyniki w `results/raw/`. [Dotychczasowe wyniki E1 i E3](iterations/03-p1-openmp.md)
 
+Wariant G1 zwalidowano na tych samych startach E1 i zmierzono na instancji z E3. Próba daje pierwszy punkt odniesienia dla CUDA. Wyznaczenie progu opłacalności w E5 wymaga serii na większej liczbie rozmiarów. [Pierwszy pomiar G1](iterations/04-g1-cuda.md)
+
 | ID | Pytanie | Główne zmienne | Raport |
 |---|---|---|---|
 | E1 | Czy warianty zachowują poprawność i jaki jest wpływ startu? | instancja, wariant, co najmniej 10 startów | koszt końcowy, hash, iteracje i zgodność z S0 |
@@ -20,7 +22,7 @@ Seria P1 obejmuje sprawdzenie poprawności na 20 startach i pomiar skalowania na
 
 ## Zapis wyników
 
-Każdy wiersz zbiorczego CSV odpowiada pojedynczemu uruchomieniu. Skrypt sekwencyjny zapisuje `measurements.csv`, `warmup.csv`, `profile-runs.csv`, `phases.csv` i `manifest.json`. Skrypt P1 zapisuje `scaling.csv`, `warmup.csv`, `validation.csv` i `manifest.json`. W nowych tabelach `station_indices` zawiera indeksy stacji rozdzielone spacjami.
+Każdy wiersz zbiorczego CSV odpowiada pojedynczemu uruchomieniu. Skrypt sekwencyjny zapisuje `measurements.csv`, `warmup.csv`, `profile-runs.csv`, `phases.csv` i `manifest.json`. Skrypt P1 zapisuje `scaling.csv`, `warmup.csv`, `validation.csv` i `manifest.json`. Opcja `--include-cuda` dołącza G1 i kolumny `h2d_bytes` oraz `d2h_bytes`. W nowych tabelach `station_indices` zawiera indeksy stacji rozdzielone spacjami.
 
 W archiwalnych seriach sekwencyjnych `source_file` wskazuje pierwotny plik względem `results/raw/`, a `metadata_id` odsyła do treści jego metadanych w `archive.metadata` w manifeście. Pole `rep` zachowuje wartość z pierwotnego CSV. `run_number` zawiera numer odczytany z nazwy pliku, jeśli był w niej zapisany. [Pojedyncze wcześniejsze uruchomienia](../results/raw/seq-standalone/runs.csv) pozostają we wspólnej tabeli.
 

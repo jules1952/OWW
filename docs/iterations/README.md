@@ -7,3 +7,4 @@
 | [S0 i S1](S0-S1.md) | Pierwsze pomiary, wąskie gardło S0 i sposób zmniejszenia liczby obliczeń. |
 | [Pomiar całego uruchomienia](02-seq-end-to-end.md) | Osobne czasy odczytu, wyszukiwania i całego procesu dla S0 i S1. |
 | [OpenMP P1](03-p1-openmp.md) | Podział pracy między wątki, zgodność z S0 i wyniki skalowania. |
+| [CUDA G1](04-g1-cuda.md) | Pierwszy wariant GPU, zgodność z S0 oraz pomiar przygotowania, wyszukiwania i transferów. |
