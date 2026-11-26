@@ -1,0 +1,430 @@
+{
+  "checkout": {
+    "commit": "21b00b74b44dc018129a6da411f4f817b8587176",
+    "dirty": true,
+    "source_sha256": {
+      "CMakeLists.txt": "ffd4bb7dfe00544003dc7857e47c9a3c51a18d2add94c7a33ed683830ed70fb5",
+      "bench/configs/record_build.py": "04b220e812ccc522248b3a703d66f56d016f83b019849d0293bede33537fd5d9",
+      "bench/run_seq_profile.py": "5fa17971718cf126e2889e82d3972b53cee611ecd53bc35fe3596fb67772ea8d",
+      "data/gen.py": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "src/common/input.cpp": "3313796a69bed6e5447ce976f2aeebe64c1d1564388028793cbc7279453899a2",
+      "src/common/input.hpp": "faf21c848eb7a85acf915c87336713d0731c9ce82b3150d0daede5d7c721b1ed",
+      "src/common/nearest_search.cpp": "0ddf500ef2f8610c518766f3153c13f90eb574fc93b7906fb6b2b16463c31b6a",
+      "src/common/nearest_search.hpp": "d017bba1b49de978430d1ad189dfdd60de0b23e164701d71728358229f594fd9",
+      "src/common/solution.cpp": "6247d89596fbc63ef4f59873d2bf6c32943689f7fedecf07fa283525a5470c91",
+      "src/common/solution.hpp": "ac6efbf0ad48b9d55d1314a7cace10feb45c567d1cd4cd806975b76668c0103f",
+      "src/common/solver_cli.cpp": "95abc4ed7b81de28de6110cc340051f79bbb6f1b8c64d3e4a6acb7e80f5c471a",
+      "src/common/solver_cli.hpp": "cb960831f0180ff191cb0ba5662564b17c35af04d7976e818172792f3d8f3280",
+      "src/seq/build_info.hpp": "def65246cbf62151b3d758f698ca0d3d86ad01b2ae5fb9f39a69c6710b2590e1",
+      "src/seq/phase_profile.hpp": "4126367aa28b178945dc5e11e7bbcd18f375d8fcc8e9123b82204112c34d1c2e",
+      "src/seq/s0.cpp": "a66ff452b15ba7c205ad07a60fe69eaee70c1d37e8f2010cdf7f14ce7532893c",
+      "src/seq/s0.hpp": "140c588f916912c05cfb43b623a44bb75ac5898ba59c9cf08178164a9230f601",
+      "src/seq/s0_main.cpp": "abbfe799b747e687cef308880c3c5f55cbceb7a1015414111213b06034c5c9be",
+      "src/seq/s1.cpp": "50fd05c9b6788dcb0daa011c51874eb7311fa21d1869cca9b833f8cf6c7bbb61",
+      "src/seq/s1.hpp": "fb06702b19335a0874e79a9e009a68689af343af5eca75c4de3c556b4ee92fd8",
+      "src/seq/s1_main.cpp": "2307cefe1e57d9f859c569699bff8ad4583cb778f497e952d7e40c37281f0458",
+      "src/omp/p1.cpp": "b3bbab991da7b87847d3699a9be58f09852295d28d5b2b12d25a6e8607f55d15",
+      "src/omp/p1.hpp": "b62b9b552721af206ee8d3d0426a35d2dd91b050e6e1a08f82b402eaa0f6c0ed",
+      "src/omp/p1_main.cpp": "f73e515ece45323c40cdae7b704a4da8a782c2e64432b4ab73df0b74a540d2e4",
+      "bench/run_omp_scaling.py": "c57fb4bcedb93dcf090d2f77f3790cbb184a29fb1dacdac157083c35fde9c83b",
+      "src/cuda/g1.cu": "36f7fe684acf60aa122367d573c80e42edd8fff927127eadc5a66c6b006ddffc",
+      "src/cuda/g1.hpp": "155bbeb3dbad8eb51a3728caf7dc4e9c8694f0f7b19252ad46a00e4697f35762",
+      "src/cuda/g1_main.cpp": "55fe75d6d02f8c54db76ff6d35f3b032e08876a47d816a4077f64df0e0f605f1"
+    }
+  },
+  "executables": {
+    "s0": {
+      "path": "build/g1-release/pm_s0.exe",
+      "sha256": "ab498ebf50836f082685767a1da3777a3af16853d9c74ba1c012ac387ce9a3b7",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release"
+    },
+    "s1": {
+      "path": "build/g1-release/pm_s1.exe",
+      "sha256": "baec2363d9070583b9248370ba8c9968e434632ef79891252c8def8c8d7d6863",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release"
+    },
+    "p1": {
+      "path": "build/g1-release/pm_p1.exe",
+      "sha256": "90bedc4ea5060c7e9b0e91ce2ebdba7ee02e736ca347e5ace6b72345ca4eb27a",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "openmp": "2.0"
+    },
+    "g1": {
+      "path": "build/g1-release/pm_g1.exe",
+      "sha256": "b462aa58c87ee13d8bb8b9e0b629fe18d8806a6f410aaf73bf5c462ed19dac8d",
+      "profiling": false,
+      "compiler": "MSVC 19.52.37029.0",
+      "configuration": "Release",
+      "cuda": "NVIDIA 13.5.37",
+      "cuda_architectures": "86"
+    }
+  },
+  "config": {
+    "path": "bench/configs/g1-e5.json",
+    "sha256": "c936667f9b7d4b2f8f4a156a7d1d5910c0534207eae46efe0c660ad82d433ac5"
+  },
+  "parameters": {
+    "threads": [
+      4,
+      8,
+      16
+    ],
+    "repetitions": 5,
+    "scaling": [
+      {
+        "directory": "data/generated/e5_n1000_m180",
+        "start": "start_p15_s1.txt"
+      },
+      {
+        "directory": "data/generated/p1_e3",
+        "start": "start_p15_s1.txt"
+      },
+      {
+        "directory": "data/generated/e5_n10000_m180",
+        "start": "start_p15_s1.txt"
+      },
+      {
+        "directory": "data/generated/e5_n30000_m180",
+        "start": "start_p15_s1.txt"
+      },
+      {
+        "directory": "data/generated/e5_n60000_m180",
+        "start": "start_p15_s1.txt"
+      },
+      {
+        "directory": "data/generated/e5_n10000_m720",
+        "start": "start_p15_s1.txt"
+      }
+    ],
+    "validation": []
+  },
+  "datasets": {
+    "data/generated/e5_n1000_m180": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 1000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "b6b08eae65a418975e9dbcd909efe6b8d1065090bf89ca1704c41ac549dde995"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        }
+      ]
+    },
+    "data/generated/p1_e3": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "6160dd784506929abe27522c2b878ffd1059cdfa9a50645e234504353f28d9bc",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 3000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "780d9fc2b46352ec927bac7bd17b7973f256b3d9c0436ea2a64cc3dbb9bc1eee"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        },
+        {
+          "p": 15,
+          "seed": 2,
+          "file": "start_p15_s2.txt",
+          "sha256": "593c03727ef02311854f03ff8434f44d9a72b23acf48b9a841585ef81c720115"
+        },
+        {
+          "p": 15,
+          "seed": 3,
+          "file": "start_p15_s3.txt",
+          "sha256": "80ef3155547bcf5cba3f423e7f0337a3201a0cd373a6b7ac66eef7275df482e0"
+        },
+        {
+          "p": 15,
+          "seed": 4,
+          "file": "start_p15_s4.txt",
+          "sha256": "ca5964c47a4fd85b7b173963ed543cbb1fffe440e61e46f5ee44ee4d4a400e2e"
+        },
+        {
+          "p": 15,
+          "seed": 5,
+          "file": "start_p15_s5.txt",
+          "sha256": "8739605c53f7565f29f8a4915e911505a0e3dc0350ca8c7ddf8fd4a626db5ddb"
+        },
+        {
+          "p": 15,
+          "seed": 6,
+          "file": "start_p15_s6.txt",
+          "sha256": "9c7a458708845a9425054f07ff4d6da8f9529e3284af12e94b3d381b61ef6855"
+        },
+        {
+          "p": 15,
+          "seed": 7,
+          "file": "start_p15_s7.txt",
+          "sha256": "0bf3452161a763a5556d4e4a9da69804aeb2083f25f3b4bd6c70f158017b946e"
+        },
+        {
+          "p": 15,
+          "seed": 8,
+          "file": "start_p15_s8.txt",
+          "sha256": "228e70ebbcacb7daac2c3e6e5344dd29d5cda2da1fdc4ad5c02d37095be0e607"
+        },
+        {
+          "p": 15,
+          "seed": 9,
+          "file": "start_p15_s9.txt",
+          "sha256": "9876e2df356e926f05bddbd3d207808d2edeea236118450e6b0efd510de477db"
+        },
+        {
+          "p": 15,
+          "seed": 10,
+          "file": "start_p15_s10.txt",
+          "sha256": "27fc2fc21ff41ffaa132eec3d0d930512dee9b65ff7511195408812597ac8ba1"
+        }
+      ]
+    },
+    "data/generated/e5_n10000_m180": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 10000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "11e1ab9ba786d5863d938896e9124a58138759d890262d726796dd9f2d9d615a"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        }
+      ]
+    },
+    "data/generated/e5_n30000_m180": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 30000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "e3823d6dc9a46ddc99984daf103820edd73ac67c38cc25155c0956d6bb72bc06"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        }
+      ]
+    },
+    "data/generated/e5_n60000_m180": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 60000,
+        "m": 180,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "8edf15f3cf3bf2fd9666faabad9f3f853566eb47a8bd2959f5ac7540a9233129"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "524dc21e7b430c38b2a519bfb7047385ee1ebe1e3984bec7bd437da9cecad4c1"
+        }
+      ]
+    },
+    "data/generated/e5_n10000_m720": {
+      "schema_version": 1,
+      "generator": "pmedian-stdlib-v1",
+      "generator_sha256": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "python_version": "3.12.14",
+      "units": "metres",
+      "distance": "euclidean",
+      "index_base": 0,
+      "config": {
+        "n": 10000,
+        "m": 720,
+        "p": [
+          15
+        ],
+        "distribution": "uniform",
+        "weights": "lognormal",
+        "size": 10000,
+        "clusters": 5,
+        "sigma": 500,
+        "background": 0.05,
+        "seed": 3,
+        "start_seeds": [
+          1
+        ]
+      },
+      "cluster_centers": [],
+      "instance": {
+        "file": "instance.txt",
+        "sha256": "a31e18cfa60d258a7d775fbaba0c437216c7d157d9d9424b35e2d95171a7dec1"
+      },
+      "starts": [
+        {
+          "p": 15,
+          "seed": 1,
+          "file": "start_p15_s1.txt",
+          "sha256": "83cb862849bc86a2077b8f92802e4709dcf4e98fa2f930c800c14a7f69b96dcb"
+        }
+      ]
+    }
+  },
+  "host": {
+    "system": "Windows-10-10.0.19045-SP0",
+    "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+    "logical_cpus": 16,
+    "python": "3.12.14"
+  },
+  "openmp_environment": {
+    "OMP_DYNAMIC": "FALSE"
+  },
+  "timing": {
+    "t_prep": "C++ instance and start file parsing",
+    "t_search": "C++ solver call",
+    "t_total": "wall clock around the C++ process including file and console I/O"
+  },
+  "gpu": [
+    "NVIDIA GeForce RTX 3070, 621.01, 8192 MiB"
+  ],
+  "cuda_timing": {
+    "t_prep": "input parsing and solver setup including distances and GPU allocations",
+    "t_h2d": "blocking copies of distances, weights and iteration state",
+    "t_search": "solver call excluding solver setup and H2D/D2H",
+    "t_d2h": "blocking copies of swap costs after kernel completion",
+    "gpu_mem_mb": "device buffers allocated by G1 in MiB"
+  }
+}

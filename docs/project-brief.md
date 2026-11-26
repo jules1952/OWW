@@ -30,4 +30,4 @@ Pomiar obejmuje osobno przygotowanie danych, wyszukiwanie i pełne uruchomienie 
 
 ## Stan prac
 
-Działają generator, wspólny parser oraz S0, S1, P1 i G1. Instancje mają format tekstowy v1 i są odtwarzalne z parametrów i ziaren losowania. G1 sprawdzono na RTX 3070. Ustalenie progu opłacalności GPU wymaga pomiarów dla różnych rozmiarów instancji. Zakres ewentualnej pracy wielowęzłowej, w tym użycie MPI, wymaga ustalenia. [Format danych](../data/README.md) · [Środowisko](environment-windows.md)
+Działają generator, wspólny parser oraz S0, S1, P1 i G1. Instancje mają format tekstowy v1 i są odtwarzalne z parametrów i ziaren losowania. W E5 na RTX 3070 G1 wyprzedził OpenMP w całym czasie uruchomienia na dwóch z sześciu instancji. Zakres ewentualnej pracy wielowęzłowej, w tym użycie MPI, wymaga ustalenia. [Format danych](../data/README.md) · [Środowisko](environment-windows.md) · [Wyniki E5](iterations/05-e5-cuda.md)

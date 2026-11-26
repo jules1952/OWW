@@ -2,6 +2,9 @@
 #include "nearest_search.hpp"
 #include <cuda_runtime.h>
 #include <chrono>
+#ifdef PMEDIAN_PROFILE_CUDA
+#include <cstdio>
+#endif
 #include <limits>
 #include <stdexcept>
 #include <utility>
@@ -78,22 +81,37 @@ void search_on_gpu(const Instance& instance, NearestSearch& search, Clock::time_
     const auto m = instance.candidates.size();
     const auto p = search.station_count();
     const auto swap_count = checked_product(p, m - p);
-    constexpr unsigned block_size = 128;
+    // Rozmiar bloku określa liczbę bloków, a każdy wątek nadal ocenia jedną zamianę.
+    constexpr unsigned block_size = PMEDIAN_CUDA_BLOCK_SIZE;
     const auto block_count = (swap_count - 1) / block_size + 1;
     int device;
     int max_grid_x;
+#ifdef PMEDIAN_PROFILE_CUDA
+    // Pierwsze wywołania mogą obejmować start środowiska CUDA.
+    const auto device_query_begin = Clock::now();
+#endif
     check_cuda(cudaGetDevice(&device), "cudaGetDevice");
     check_cuda(cudaDeviceGetAttribute(&max_grid_x, cudaDevAttrMaxGridDimX, device),
                "cudaDeviceGetAttribute maxGridDimX");
     if (block_count > static_cast<std::size_t>(max_grid_x))
         throw std::runtime_error("Liczba blokow G1 przekracza limit GPU.");
 
+#ifdef PMEDIAN_PROFILE_CUDA
+    const double device_query_seconds = seconds_since(device_query_begin);
+    const auto device_alloc_begin = Clock::now();
+#endif
     DeviceBuffer<double> device_weights(n);
     DeviceBuffer<double> device_distances(checked_product(n, m));
     DeviceBuffer<NearestSearch::Nearest> device_nearest(n);
     DeviceBuffer<std::size_t> device_stations(p);
     DeviceBuffer<std::size_t> device_incoming(m - p);
     DeviceBuffer<double> device_costs(swap_count);
+#ifdef PMEDIAN_PROFILE_CUDA
+    const double device_alloc_seconds = seconds_since(device_alloc_begin);
+    double host_matrix_seconds;
+    double kernel_sync_seconds = 0.0;
+    std::size_t kernel_calls = 0;
+#endif
     const auto state_bytes = device_nearest.bytes() + device_stations.bytes() + device_incoming.bytes();
     const auto fixed_bytes = device_weights.bytes() + device_distances.bytes();
     metrics.device_bytes = fixed_bytes + state_bytes + device_costs.bytes();
@@ -104,9 +122,15 @@ void search_on_gpu(const Instance& instance, NearestSearch& search, Clock::time_
     {
         // Macierz zapisujemy kolumnami: wszystkie odległości do jednego kandydata są obok siebie.
         // Wspólne obliczenie odległości na CPU zachowuje zaokrąglenia z S1.
+#ifdef PMEDIAN_PROFILE_CUDA
+        const auto host_matrix_begin = Clock::now();
+#endif
         std::vector<double> distances(n * m);
         for (std::size_t in = 0; in < m; ++in)
             search.cache_candidate(in, distances.data() + in * n);
+#ifdef PMEDIAN_PROFILE_CUDA
+        host_matrix_seconds = seconds_since(host_matrix_begin);
+#endif
         std::vector<double> weights(n);
         for (std::size_t i = 0; i < n; ++i) weights[i] = instance.demand[i].weight;
 
@@ -132,12 +156,19 @@ void search_on_gpu(const Instance& instance, NearestSearch& search, Clock::time_
         metrics.h2d_seconds += seconds_since(h2d_begin);
         metrics.h2d_bytes += state_bytes;
 
+#ifdef PMEDIAN_PROFILE_CUDA
+        const auto kernel_begin = Clock::now();
+#endif
         evaluate_swaps<<<static_cast<unsigned>(block_count), block_size>>>(
             device_weights.data(), device_distances.data(), device_nearest.data(),
             device_stations.data(), device_incoming.data(), n, p, swap_count, device_costs.data());
         check_cuda(cudaGetLastError(), "kernel G1");
         // Czekamy przed D2H, żeby czasu pracy kernela nie zaliczyć do czasu transferu.
         check_cuda(cudaDeviceSynchronize(), "cudaDeviceSynchronize kernel G1");
+#ifdef PMEDIAN_PROFILE_CUDA
+        kernel_sync_seconds += seconds_since(kernel_begin);
+        ++kernel_calls;
+#endif
 
         const auto d2h_begin = Clock::now();
         device_costs.download(costs.data());
@@ -150,6 +181,13 @@ void search_on_gpu(const Instance& instance, NearestSearch& search, Clock::time_
         if (!search.apply(best)) break;
         search.refresh_nearest();
     }
+#ifdef PMEDIAN_PROFILE_CUDA
+    // Profil zapisujemy po wyszukiwaniu w formacie faz używanym przez solvery CPU.
+    std::fprintf(stderr, "cuda_device_query,1,%.17g\ncuda_device_alloc,1,%.17g\n"
+                         "host_distance_matrix,1,%.17g\nkernel_and_sync,%zu,%.17g\n",
+                 device_query_seconds, device_alloc_seconds, host_matrix_seconds,
+                 kernel_calls, kernel_sync_seconds);
+#endif
 }
 
 } // namespace

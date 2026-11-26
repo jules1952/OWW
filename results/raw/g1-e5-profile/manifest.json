@@ -1,0 +1,54 @@
+{
+  "checkout": {
+    "commit": "21b00b74b44dc018129a6da411f4f817b8587176",
+    "dirty": true,
+    "source_sha256": {
+      "CMakeLists.txt": "cc0d24a2623266dd5f13abcd36a1f931987890cb017850fd19d9c4988b06898b",
+      "bench/configs/record_build.py": "04b220e812ccc522248b3a703d66f56d016f83b019849d0293bede33537fd5d9",
+      "bench/run_seq_profile.py": "5fa17971718cf126e2889e82d3972b53cee611ecd53bc35fe3596fb67772ea8d",
+      "data/gen.py": "10c0010d60463da008f1d36c73ec7430d36c18d8fb348f0b6c923ad9ab45f6a1",
+      "src/common/input.cpp": "3313796a69bed6e5447ce976f2aeebe64c1d1564388028793cbc7279453899a2",
+      "src/common/input.hpp": "faf21c848eb7a85acf915c87336713d0731c9ce82b3150d0daede5d7c721b1ed",
+      "src/common/nearest_search.cpp": "0ddf500ef2f8610c518766f3153c13f90eb574fc93b7906fb6b2b16463c31b6a",
+      "src/common/nearest_search.hpp": "d017bba1b49de978430d1ad189dfdd60de0b23e164701d71728358229f594fd9",
+      "src/common/solution.cpp": "6247d89596fbc63ef4f59873d2bf6c32943689f7fedecf07fa283525a5470c91",
+      "src/common/solution.hpp": "ac6efbf0ad48b9d55d1314a7cace10feb45c567d1cd4cd806975b76668c0103f",
+      "src/common/solver_cli.cpp": "95abc4ed7b81de28de6110cc340051f79bbb6f1b8c64d3e4a6acb7e80f5c471a",
+      "src/common/solver_cli.hpp": "cb960831f0180ff191cb0ba5662564b17c35af04d7976e818172792f3d8f3280",
+      "src/seq/build_info.hpp": "def65246cbf62151b3d758f698ca0d3d86ad01b2ae5fb9f39a69c6710b2590e1",
+      "src/seq/phase_profile.hpp": "4126367aa28b178945dc5e11e7bbcd18f375d8fcc8e9123b82204112c34d1c2e",
+      "src/seq/s0.cpp": "a66ff452b15ba7c205ad07a60fe69eaee70c1d37e8f2010cdf7f14ce7532893c",
+      "src/seq/s0.hpp": "140c588f916912c05cfb43b623a44bb75ac5898ba59c9cf08178164a9230f601",
+      "src/seq/s0_main.cpp": "abbfe799b747e687cef308880c3c5f55cbceb7a1015414111213b06034c5c9be",
+      "src/seq/s1.cpp": "50fd05c9b6788dcb0daa011c51874eb7311fa21d1869cca9b833f8cf6c7bbb61",
+      "src/seq/s1.hpp": "fb06702b19335a0874e79a9e009a68689af343af5eca75c4de3c556b4ee92fd8",
+      "src/seq/s1_main.cpp": "2307cefe1e57d9f859c569699bff8ad4583cb778f497e952d7e40c37281f0458",
+      "bench/run_omp_scaling.py": "c57fb4bcedb93dcf090d2f77f3790cbb184a29fb1dacdac157083c35fde9c83b",
+      "bench/run_cuda_profile.py": "3bad8abd3be4dd77956639f5ca21ce891ba723ae3e07884bbe242b266f272ec9",
+      "src/cuda/g1.cu": "32e5a9bae7d46989ab3b28d0453760d0d6d95c2946625979930020c54619b158",
+      "src/cuda/g1.hpp": "155bbeb3dbad8eb51a3728caf7dc4e9c8694f0f7b19252ad46a00e4697f35762",
+      "src/cuda/g1_main.cpp": "55fe75d6d02f8c54db76ff6d35f3b032e08876a47d816a4077f64df0e0f605f1"
+    }
+  },
+  "executable": {
+    "path": "build/g1-profile/pm_g1.exe",
+    "sha256": "417d4da0b952464f2f51142186edccbdc48eadc1225065c42f03d3381a789111",
+    "profiling": true,
+    "compiler": "MSVC 19.52.37029.0",
+    "configuration": "Release",
+    "cuda": "NVIDIA 13.5.37",
+    "cuda_architectures": "86"
+  },
+  "baseline": {
+    "manifest": {
+      "path": "results/raw/g1-e5/manifest.json",
+      "sha256": "b05df40f309ef074c8a40bd2451110142bbef6eb1289a1c95a3c44eddfb03151"
+    },
+    "validation": {
+      "path": "results/raw/g1-e5/validation.csv",
+      "sha256": "b87c5c0d9f02f3cecdd48a9ecb48ec1bc9d26093de58f4f8c042dc0c4e82f6d6"
+    }
+  },
+  "warmups": 1,
+  "repetitions": 5
+}

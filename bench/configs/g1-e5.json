@@ -1,0 +1,13 @@
+{
+  "threads": [4, 8, 16],
+  "repetitions": 5,
+  "scaling": [
+    {"directory": "data/generated/e5_n1000_m180", "start": "start_p15_s1.txt"},
+    {"directory": "data/generated/p1_e3", "start": "start_p15_s1.txt"},
+    {"directory": "data/generated/e5_n10000_m180", "start": "start_p15_s1.txt"},
+    {"directory": "data/generated/e5_n30000_m180", "start": "start_p15_s1.txt"},
+    {"directory": "data/generated/e5_n60000_m180", "start": "start_p15_s1.txt"},
+    {"directory": "data/generated/e5_n10000_m720", "start": "start_p15_s1.txt"}
+  ],
+  "validation": []
+}

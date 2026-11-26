@@ -43,7 +43,7 @@ ctest --test-dir build/g1-release --output-on-failure
 .\build\g1-release\pm_g1.exe data/generated/uniform_demo/instance.txt data/generated/uniform_demo/start_p5_s1.txt results/raw/demo_g1.csv
 ```
 
-Włączenie CUDA dodaje do CTest przypadki wykonywane na GPU. W CSV G1 podaje czasy transferów, a w metadanych ich rozmiary w bajtach.
+Włączenie CUDA dodaje do CTest przypadki wykonywane na GPU. W CSV G1 podaje czasy transferów, a w metadanych ich rozmiary w bajtach. `PMEDIAN_CUDA_BLOCK_SIZE` domyślnie wynosi 128. `PMEDIAN_PROFILE_CUDA=ON` włącza szczegółowy profil faz w osobnej kompilacji. [Odtworzenie porównania i profilu](docs/iterations/05-e5-cuda.md#odtworzenie)
 
 ## Co udało się sprawdzić
 
@@ -58,4 +58,5 @@ G1 również zwrócił te same wyniki co S0 na 20 startach. W nowej serii na ins
 - [Generator i format danych](data/README.md)
 - [Środowisko kompilacji](docs/environment-windows.md)
 - [Metoda pomiaru i plan badań](docs/experiments.md)
+- [Porównanie CPU i GPU dla sześciu instancji](docs/iterations/05-e5-cuda.md)
 - [Wyniki poszczególnych etapów](docs/iterations/README.md)

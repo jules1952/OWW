@@ -16,7 +16,8 @@ inline bool print_build_info_if_requested(int argc, char** argv) {
 #endif
 #ifdef PMEDIAN_BUILD_CUDA
     std::cout << "cuda=" << PMEDIAN_BUILD_CUDA
-              << "\ncuda_architectures=" << PMEDIAN_BUILD_CUDA_ARCHITECTURES << '\n';
+              << "\ncuda_architectures=" << PMEDIAN_BUILD_CUDA_ARCHITECTURES
+              << "\ncuda_block_size=" << PMEDIAN_BUILD_CUDA_BLOCK_SIZE << '\n';
 #endif
     return true;
 }

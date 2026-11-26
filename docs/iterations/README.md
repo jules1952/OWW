@@ -8,3 +8,4 @@
 | [Pomiar całego uruchomienia](02-seq-end-to-end.md) | Osobne czasy odczytu, wyszukiwania i całego procesu dla S0 i S1. |
 | [OpenMP P1](03-p1-openmp.md) | Podział pracy między wątki, zgodność z S0 i wyniki skalowania. |
 | [CUDA G1](04-g1-cuda.md) | Pierwszy wariant GPU, zgodność z S0 oraz pomiar przygotowania, wyszukiwania i transferów. |
+| [Opłacalność CUDA w E5](05-e5-cuda.md) | Porównanie pełnych czasów S1, P1 i G1 na sześciu instancjach i profil faz CUDA. |
